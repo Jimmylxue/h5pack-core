@@ -18,3 +18,4 @@ images/
 temp/
 h5pack.json
 pnpm-lock.json
+dist/
