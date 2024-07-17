@@ -1,0 +1,9 @@
+# OSX
+#
+.DS_Store
+
+dist/
+
+app-release.apk
+
+node_modules/

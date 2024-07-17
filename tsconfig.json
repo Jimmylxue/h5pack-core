@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true, // 严格模式
+    "target": "ESNext", // 指定ECMAScript目标版本（ESNext为最新）
+    "module": "ESNext", // 指定生成哪个模块系统代码
+    "moduleResolution": "Node", // 如何处理模块
+    "esModuleInterop": true,
+    "skipLibCheck": true, // 跳过.d.ts检测
+    "declaration": true, // 生成.d.ts文件
+    "declarationDir": "./build/types", // 声明文件创建目录
+    "sourceMap": true, // 生成相应.map文件
+    "noUnusedLocals": true, // 不允许不使用已定义的变量
+    "noUnusedParameters": true, // 不允许不使用的参数
+    "baseUrl": "./" // 解析非相对模块名的基准目录
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "build"]
+}
