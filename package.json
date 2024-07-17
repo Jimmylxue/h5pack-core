@@ -1,6 +1,6 @@
 {
 	"name": "h5pack",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "快速将H5打包成app的工具",
 	"main": "build/core.cjs.prod.js",
 	"module": "build/core.esm.prod.js",

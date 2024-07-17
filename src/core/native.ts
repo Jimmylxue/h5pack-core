@@ -1,5 +1,5 @@
 import { TPackConfig } from 'src/types/type'
-// import { AndroidRepositories } from 'src/const'
+import { AndroidRepositories } from 'src/const'
 import { promises } from 'fs'
 import { join, resolve } from 'path'
 import { copyFilesByDir, isAvailableDir } from 'src/file'
@@ -25,11 +25,11 @@ export async function processAndroid(packConfig: TPackConfig, rootDir: string) {
 	const yarnCommandDir = join(rootDir, './h5pack-native')
 
 	// 克隆仓库
-	// await handleCommand(rootDir, 'git', [
-	// 	'clone',
-	// 	AndroidRepositories,
-	// 	yarnCommandDir,
-	// ])
+	await handleCommand(rootDir, 'git', [
+		'clone',
+		AndroidRepositories,
+		yarnCommandDir,
+	])
 
 	/**
 	 * 复制打包资源
@@ -45,7 +45,7 @@ export async function processAndroid(packConfig: TPackConfig, rootDir: string) {
 	/**
 	 * 安装依赖
 	 */
-	// await handleCommand(yarnCommandDir, 'yarn')
+	await handleCommand(yarnCommandDir, 'yarn')
 
 	/**
 	 * 处理个性化配置
