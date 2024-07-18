@@ -9,8 +9,8 @@
     "declaration": true, // 生成.d.ts文件
     "declarationDir": "./build/types", // 声明文件创建目录
     "sourceMap": true, // 生成相应.map文件
-    "noUnusedLocals": true, // 不允许不使用已定义的变量
-    "noUnusedParameters": true, // 不允许不使用的参数
+    "noUnusedLocals": false, // 不允许不使用已定义的变量
+    "noUnusedParameters": false, // 不允许不使用的参数
     "baseUrl": "./" // 解析非相对模块名的基准目录
   },
   "include": ["src/**/*"],

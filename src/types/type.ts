@@ -3,4 +3,10 @@ export type TPackConfig = {
 	name: string
 	splash?: string
 	logo?: string
+	output?: string
+}
+
+export type TPackError = {
+	code: number
+	message: string
 }
