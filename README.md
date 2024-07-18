@@ -12,8 +12,15 @@
 
 ![image-20240718162604678](https://image.jimmyxuexue.top/img/image-20240718162604678.png)
 
+打包效果
+
+![image-20240718165914875](https://image.jimmyxuexue.top/img/image-20240718165914875.png)
+
 App效果
-<video src="https://image.jimmyxuexue.top/video/27_1721291477.mp4"></video>
+
+![image-20240718165708410](https://image.jimmyxuexue.top/img/image-20240718165708410.png)
+
+[视频效果](https://image.jimmyxuexue.top/video/27_1721291477.mp4)
 
 GitHub:h5pack-core [传送门](https://github.com/Jimmylxue/h5pack-core)
 
