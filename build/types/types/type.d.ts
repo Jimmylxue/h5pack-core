@@ -4,6 +4,7 @@ export type TPackConfig = {
     splash?: string;
     logo?: string;
     output?: string;
+    log?: boolean;
 };
 export type TPackError = {
     code: number;

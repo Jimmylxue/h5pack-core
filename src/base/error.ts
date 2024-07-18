@@ -1,3 +1,4 @@
+import ora from 'ora'
 import { TPackError } from 'src/types/type'
 
 export class PackError extends Error {
@@ -11,5 +12,9 @@ export class PackError extends Error {
 }
 
 export function buildFailHandle(error: PackError) {
-	console.log('捕获的', error.failMessage, error.originErrorMessage)
+	const spinner = ora()
+	spinner.fail(
+		`error: ${error.failMessage?.message},code: ${error.failMessage?.code}, message: ${error?.originErrorMessage}`
+	)
+	spinner.clear()
 }

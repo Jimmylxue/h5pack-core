@@ -1,15 +1,16 @@
-import { TPackConfig } from 'src/types/type'
 import { writeFile, copyFile } from 'fs/promises'
 import { resolve, basename } from 'path'
 import { isAvailableDir } from 'src/file'
 import { PackError } from 'src/base/error'
 import { handleCommand } from 'src/command'
 import { GENERATE_ENV_ERROR, GENERATE_SPLASH_ERROR } from 'src/const'
+import { packConfig } from 'src/base/handleConfig'
+import { spinner } from 'src/base/spinner'
 
 /**
  * 处理 打包时的 env文件
  */
-async function handleEnvFile(packConfig: TPackConfig, yarnCommandDir: string) {
+async function handleEnvFile(yarnCommandDir: string) {
 	const envContent = `
   APP_NAME=${packConfig.name || 'H5Pack'}
   `
@@ -26,7 +27,7 @@ async function handleEnvFile(packConfig: TPackConfig, yarnCommandDir: string) {
 /**
  * 处理启动页图片
  */
-async function handleSplash(packConfig: TPackConfig, yarnCommandDir: string) {
+async function handleSplash(yarnCommandDir: string) {
 	if (!packConfig.splash) {
 		return
 	}
@@ -36,7 +37,6 @@ async function handleSplash(packConfig: TPackConfig, yarnCommandDir: string) {
 		const goalPath = resolve(yarnCommandDir, `./public/splash/${fileName}`)
 		if (isAvailableDir(splashPath)) {
 			await copyFile(splashPath, goalPath)
-			console.log('splash copy Success')
 			await handleCommand(
 				yarnCommandDir,
 				'yarn',
@@ -50,7 +50,6 @@ async function handleSplash(packConfig: TPackConfig, yarnCommandDir: string) {
 					throw new Error(originErrorMessage)
 				}
 			)
-			console.log('splash generate Success')
 		} else {
 			throw new Error(`packConfig.splash is not a available path`)
 		}
@@ -59,10 +58,9 @@ async function handleSplash(packConfig: TPackConfig, yarnCommandDir: string) {
 	}
 }
 
-export async function handleCustomConfig(
-	packConfig: TPackConfig,
-	yarnCommandDir: string
-) {
-	await handleEnvFile(packConfig, yarnCommandDir)
-	await handleSplash(packConfig, yarnCommandDir)
+export async function handleCustomConfig(yarnCommandDir: string) {
+	await handleEnvFile(yarnCommandDir)
+	await handleSplash(yarnCommandDir)
+	spinner.stop()
+	spinner.succeed('✅ Custom Config Success')
 }

@@ -1,4 +1,5 @@
 import { spawn } from 'child_process'
+import { showSpinner } from 'src/base/spinner'
 
 export function handleCommand(
 	rootDir: string,
@@ -8,17 +9,16 @@ export function handleCommand(
 ) {
 	return new Promise((resolve, reject) => {
 		const _command = baseCommand + ' ' + otherCommand.join(' ')
-		console.log(`${baseCommand} ${otherCommand.join(' ')} 中...... in`, rootDir)
 		const commandProcess = spawn(baseCommand, otherCommand, {
 			cwd: rootDir,
 		})
 
 		commandProcess.stdout.on('data', data => {
-			console.log(`${_command} stdout: ${data}`)
+			showSpinner(`${_command} stdout: ${data}`)
 		})
 
 		commandProcess.stderr.on('data', data => {
-			console.error(`${_command} stderr: ${data}`)
+			showSpinner(`${_command} stderr: ${data}`)
 		})
 
 		commandProcess.on('close', code => {

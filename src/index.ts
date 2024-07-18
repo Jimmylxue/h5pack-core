@@ -1,12 +1,10 @@
-import { resolve, join } from 'path'
+import { join } from 'path'
 import { tmpdir } from 'os'
 import { removeDir } from './file'
-import { TPackConfig } from './types/type'
 import { processAndroid } from './core/native'
 import { promises } from 'fs'
 import { buildFailHandle } from './base/error'
-
-let packConfig: TPackConfig
+import { handlePackConfig } from './base/handleConfig'
 
 async function main() {
 	let tempDir
@@ -14,10 +12,7 @@ async function main() {
 		const rootDir = tmpdir()
 		tempDir = join(rootDir, 'app-build')
 		await promises.mkdir(tempDir, { recursive: true })
-		console.log('build in tempDir', tempDir)
-		await processAndroid(packConfig, tempDir)
-		//
-		// throw new PackError(GIT_CLONE_ERROR)
+		await processAndroid(tempDir)
 	} catch (error: any) {
 		buildFailHandle(error)
 		removeDir(tempDir!)
@@ -25,6 +20,6 @@ async function main() {
 }
 
 export default () => {
-	packConfig = require(resolve(process.cwd(), 'h5pack.json'))
+	handlePackConfig()
 	main()
 }
