@@ -4,11 +4,11 @@
 
 <br>
 
-即兴的产物，h5pack 是一个跨平台(支持mac/windows)的app打包工具，只需简单的配置和一个指令，即可将 H5 直接打包成 Android APK
+即兴的产物，h5pack 是一个跨平台(支持 mac/windows)的 app 打包工具，只需简单的配置和一个指令，即可将 H5 直接打包成 Android APK
 
 ## demo
 
-一个常规的网页，可将其打包为一个App
+一个常规的网页，可将其打包为一个 App
 
 ![image-20240718162604678](https://image.jimmyxuexue.top/img/image-20240718162604678.png)
 
@@ -16,7 +16,7 @@
 
 ![image-20240718165914875](https://image.jimmyxuexue.top/img/image-20240718165914875.png)
 
-App效果
+App 效果
 
 ![image-20240718165708410](https://image.jimmyxuexue.top/img/image-20240718165708410.png)
 
@@ -49,10 +49,11 @@ pnpm add h5pack
 ```json
 {
 	"entry": "./dist", // h5项目打包入口
-  "name": "newApp", // app包名
+	"name": "newApp", // app包名
 	"splash": "./public/vite.svg", // app splash 启动页logo
 	"output": "./", // 打包完成后app 输出位置
 	"log": false, // 是否开启完整打包日志
+	"registry": "github" // github||gitee  资源镜像下载的地址，如因代理问题可以配置为gitee
 }
 ```
 
@@ -72,7 +73,7 @@ npm run compress
 
 ## 相关依赖
 
-App的打包依赖于另外一个仓库 [h5pack-native](https://github.com/Jimmylxue/h5pack-native) 使用的同学需要安装最基础的安卓环境
+App 的打包依赖于另外一个仓库 [h5pack-native](https://github.com/Jimmylxue/h5pack-native) 使用的同学需要安装最基础的安卓环境
 
 - `node20`、`yarn`
 
@@ -80,8 +81,6 @@ App的打包依赖于另外一个仓库 [h5pack-native](https://github.com/Jimmy
 - `Android SDK Platform 34`
 
 具体环境可以看[参考文档](https://reactnative.dev/docs/0.73/environment-setup?platform=android)
-
-
 
 ## 其他内容
 

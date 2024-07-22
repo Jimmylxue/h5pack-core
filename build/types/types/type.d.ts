@@ -5,6 +5,7 @@ export type TPackConfig = {
     logo?: string;
     output?: string;
     log?: boolean;
+    registry: 'github' | 'gitee';
 };
 export type TPackError = {
     code: number;

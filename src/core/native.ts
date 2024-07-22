@@ -66,7 +66,7 @@ export async function processAndroid(rootDir: string) {
 	await handleCommand(
 		rootDir,
 		'git',
-		['clone', AndroidRepositories, yarnCommandDir],
+		['clone', AndroidRepositories[packConfig.registry], yarnCommandDir],
 		originErrorMessage => {
 			spinner.stop()
 			throw new PackError(GIT_CLONE_ERROR, originErrorMessage)

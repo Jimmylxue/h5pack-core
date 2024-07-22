@@ -2,6 +2,7 @@
 import { rm } from 'fs/promises'
 import { join } from 'path'
 import { existsSync, mkdirSync, readdirSync, statSync, copyFileSync } from 'fs'
+import { spinner } from 'src/base/spinner'
 
 /**
  * 清空文件夹
@@ -9,9 +10,10 @@ import { existsSync, mkdirSync, readdirSync, statSync, copyFileSync } from 'fs'
 export async function removeDir(dir: string) {
 	try {
 		await rm(dir, { recursive: true, force: true })
+		spinner.succeed('🙈 Success clear cache')
 		console.log('success clear data')
 	} catch (error: any) {
-		console.error('remove temp dir fail in ', dir)
+		spinner.fail(`🙈 remove temp dir fail in ${dir}`)
 	}
 }
 

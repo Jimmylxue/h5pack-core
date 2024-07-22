@@ -1,8 +1,10 @@
 /**
  * AndroidRepositories 的仓库
  */
-export const AndroidRepositories =
-	'https://github.com/Jimmylxue/h5pack-native.git'
+export const AndroidRepositories = {
+	github: 'https://github.com/Jimmylxue/h5pack-native.git',
+	gitee: 'https://gitee.com/jimmyxuexue/h5pack-native.git',
+}
 
 export const GIT_CLONE_ERROR = {
 	code: 10000,

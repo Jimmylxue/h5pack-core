@@ -3,5 +3,6 @@
 	"name": "my-app",
 	"splash":"./src/assets/logo.svg",
 	"output":"./",
-	"log":false
+	"log":true,
+	"registry": "gitee"
 }
