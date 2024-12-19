@@ -10,15 +10,15 @@
 
 一个常规的网页，可将其打包为一个 App
 
-![image-20240718162604678](https://image.jimmyxuexue.top/img/image-20240718162604678.png)
+<img width="1615" alt="image" src="https://github.com/user-attachments/assets/9528fa98-7ee1-4b9a-96a5-ec0e1593b126" />
 
 打包效果
 
-![image-20240718165914875](https://image.jimmyxuexue.top/img/image-20240718165914875.png)
+<img width="907" alt="image" src="https://github.com/user-attachments/assets/65983db4-b7ca-4e54-939b-22e276e1f0f9" />
 
 App 效果
 
-![image-20240718165708410](https://image.jimmyxuexue.top/img/image-20240718165708410.png)
+<img width="802" alt="image" src="https://github.com/user-attachments/assets/482385ca-491f-4c3f-9c5e-7e910daa86a8" />
 
 [视频效果](https://image.jimmyxuexue.top/video/27_1721291477.mp4)
 
