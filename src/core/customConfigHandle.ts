@@ -3,7 +3,11 @@ import { resolve, basename } from 'path'
 import { isAvailableDir } from 'src/file'
 import { PackError } from 'src/base/error'
 import { handleCommand } from 'src/command'
-import { GENERATE_ENV_ERROR, GENERATE_SPLASH_ERROR } from 'src/const'
+import {
+	GENERATE_APP_LOGO_ERROR,
+	GENERATE_ENV_ERROR,
+	GENERATE_SPLASH_ERROR,
+} from 'src/const'
 import { packConfig } from 'src/base/handleConfig'
 import { spinner } from 'src/base/spinner'
 
@@ -58,9 +62,34 @@ async function handleSplash(yarnCommandDir: string) {
 	}
 }
 
+async function handleAppLogo(yarnCommandDir: string) {
+	if (!packConfig.logo) {
+		return
+	}
+	try {
+		const fileName = basename(packConfig.logo)
+		const appLogoPath = resolve(process.cwd(), packConfig.logo)
+		const goalPath = resolve(yarnCommandDir, `./public/logo/${fileName}`)
+		if (isAvailableDir(appLogoPath)) {
+			await copyFile(appLogoPath, goalPath)
+			await handleCommand(
+				yarnCommandDir,
+				'npx',
+				['iconkits', `--input=./public/logo/${fileName}`],
+				originErrorMessage => {
+					throw new Error(originErrorMessage)
+				}
+			)
+		}
+	} catch (error: any) {
+		throw new PackError(GENERATE_APP_LOGO_ERROR, error.message)
+	}
+}
+
 export async function handleCustomConfig(yarnCommandDir: string) {
 	await handleEnvFile(yarnCommandDir)
 	await handleSplash(yarnCommandDir)
+	await handleAppLogo(yarnCommandDir)
 	spinner.stop()
 	spinner.succeed('✅ Custom Config Success')
 }

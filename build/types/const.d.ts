@@ -33,3 +33,7 @@ export declare const BUILD_SUCCESS_CALLBACK_ERROR: {
     code: number;
     message: string;
 };
+export declare const GENERATE_APP_LOGO_ERROR: {
+    code: number;
+    message: string;
+};

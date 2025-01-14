@@ -40,3 +40,8 @@ export const BUILD_SUCCESS_CALLBACK_ERROR = {
 	code: 10006,
 	message: 'copy release异常，请检查h5pack.json中output配置',
 }
+
+export const GENERATE_APP_LOGO_ERROR = {
+	code: 10007,
+	message: 'appLogo启动页生成异常，请检查h5pack.json中logo相关配置',
+}
