@@ -6,7 +6,7 @@
 
 即兴的产物，h5pack 是一个跨平台(支持 mac/windows)的 app 打包工具，只需简单的配置和一个指令，即可将 H5 直接打包成 Android APK
 
-## demo
+## 效果
 
 一个常规的网页，可将其打包为一个 App
 
@@ -81,6 +81,14 @@ App 的打包依赖于另外一个仓库 [h5pack-native](https://github.com/Jimm
 - `Android SDK Platform 34`
 
 具体环境可以看[参考文档](https://reactnative.dev/docs/0.73/environment-setup?platform=android)
+
+## example
+
+example 中有两个 示例。simple 版本和 docker 版本
+
+[simple](https://github.com/Jimmylxue/h5pack-core/tree/main/example/simple)：适用于宿主机有安卓环境，可按照上面相关依赖自行安装依赖
+
+[docker](https://github.com/Jimmylxue/h5pack-core/tree/main/example/docker)：docker 处理好了所有的环境，可基于 docker 进行打包
 
 ## 其他内容
 
