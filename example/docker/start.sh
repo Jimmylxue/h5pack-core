@@ -4,11 +4,8 @@ set -e
 echo "开始构建 Docker 镜像..."
 docker build -t h5pack-example .
 
-echo "启动 Docker 容器..."
-docker run --name my_container -d h5pack-example
-
-echo "在容器中执行命令..."
-docker exec my_container sh -c "
+echo "执行打包命令..."
+docker run --name my_container h5pack-example sh -c "
     echo '当前工作目录:'
     pwd
     echo '切换到 /app 目录...'
