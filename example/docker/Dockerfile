@@ -14,7 +14,7 @@ ENV PATH=${PATH}:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools:${
 
 # 安装必要的工具和 OpenJDK
 RUN apt-get update && \
-  apt-get install -y openjdk-${JDK_VERSION}-jdk git wget unzip && \
+  apt-get install -y openjdk-${JDK_VERSION}-jdk git wget unzip tar bzip2 && \
   apt-get clean
 
 # 下载并安装 Android SDK Command-Line Tools
