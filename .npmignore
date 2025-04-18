@@ -21,3 +21,4 @@ pnpm-lock.json
 dist/
 app-release.apk
 example/
+.github/
