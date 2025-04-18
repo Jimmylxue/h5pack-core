@@ -37,7 +37,7 @@ GitHub:h5pack-core [传送门](https://github.com/Jimmylxue/h5pack-core)
 1. 安装
 
 ```
-pnpm add h5pack
+pnpm add -D h5pack
 ```
 
 2. 配置
@@ -77,7 +77,6 @@ npm run compress
 App 的打包依赖于另外一个仓库 [h5pack-native](https://github.com/Jimmylxue/h5pack-native) 使用的同学需要安装最基础的安卓环境
 
 - `node20`、`yarn`
-
 - `javaJDK17`
 - `Android SDK Platform 34`
 

@@ -1,0 +1,9 @@
+{
+	"entry": "./dist",
+	"name": "my-app",
+	"splash":"./assets/splash.svg",
+	"output":"./",
+	"log":true,
+	"registry": "github",
+	"logo": "./assets/splash.svg"
+}
