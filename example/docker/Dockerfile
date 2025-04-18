@@ -66,5 +66,3 @@ COPY . /app
 
 # 暴露应用程序端口（根据需要修改）
 EXPOSE 999
-
-RUN chmod +x /app/build.sh
