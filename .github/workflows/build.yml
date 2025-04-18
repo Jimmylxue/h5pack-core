@@ -1,0 +1,16 @@
+name: 打包H5Pack
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 迁出代码
+        uses: actions/checkout@v2
+
+      - name: 执行脚本
+        run: |
+          cd example/docker
+          sh start.sh
