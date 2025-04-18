@@ -42,12 +42,7 @@ RUN apt-get update && apt-get install -y curl && apt-get clean
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# 根据系统架构选择正确的 Node.js 包
-RUN if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
-  curl -o node.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-arm64.tar.gz; \
-  else \
-  curl -o node.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz; \
-  fi \
+RUN curl -o node.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz \
   && tar -xzf node.tar.gz -C /usr/local --strip-components=1 \
   && rm node.tar.gz
 
