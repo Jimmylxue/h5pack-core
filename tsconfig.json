@@ -11,8 +11,12 @@
     "sourceMap": true, // 生成相应.map文件
     "noUnusedLocals": false, // 不允许不使用已定义的变量
     "noUnusedParameters": false, // 不允许不使用的参数
-    "baseUrl": "./" // 解析非相对模块名的基准目录
+    "baseUrl": "./", // 解析非相对模块名的基准目录
+    "types": []
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules",
+    "**/node_modules/*",
+    "dist",
+    "build"]
 }

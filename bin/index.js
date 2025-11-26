@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 
-const init = require('../index')
+const init = require('../index.js')
+
+console.log('init', init)
 // import init from '../index'
-init()
+init.default()

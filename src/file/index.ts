@@ -24,21 +24,6 @@ export function isAvailableDir(path: string) {
 	return existsSync(path)
 }
 
-/**
- * 复制文件夹下的所有文件件
- */
-// export async function copyFilesByDir(sourceDir: string, goalDir: string) {
-// 	try {
-// 		const files = await readdir(sourceDir)
-// 		files.forEach(async file => {
-// 			const sourcePath = join(sourceDir, file)
-// 			const destPath = join(goalDir, file)
-// 			await copyFile(sourcePath, destPath)
-// 		})
-// 	} catch (error: any) {
-// 		console.error(error)
-// 	}
-// }
 export function copyFilesByDir(sourceDir: string, goalDir: string) {
 	// 创建目标文件夹,如果不存在的话
 	if (!existsSync(goalDir)) {

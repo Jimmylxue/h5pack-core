@@ -37,3 +37,7 @@ export declare const GENERATE_APP_LOGO_ERROR: {
     code: number;
     message: string;
 };
+export declare const APP_NATIVE_PERMISSION_CONFIG_ERROR: {
+    code: number;
+    message: string;
+};

@@ -10,10 +10,54 @@
 	</head>
 	<body>
 		<div id="root"></div>
+		<div>
+			<h1>hello h5pack</h1>
+			<button onclick="checkPermission()">查看权限</button>
+			<button onclick="requestCameraPermission()">申请相机权限</button>
+			<button onclick="openCamera()">跳转相机</button>
+			<button onclick="chooseImage()">打开相册</button>
+			<img id="cameraPreview" alt="" />
+			<script src="./vconsole.js"></script>
+		</div>
 	</body>
 	<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
 	<script>
 		// VConsole 默认会挂载到 `window.VConsole` 上
 		var vConsole = new window.VConsole()
+	</script>
+
+	<script>
+		new VConsole()
+	</script>
+
+	<script src="./h5PackBridge.min.js"></script>
+
+	<script>
+		function checkPermission() {
+			h5packBridge.camera.checkPermission().then(res => {
+				console.log('res', res)
+				alert(`权限结果：${res ? '有' : '无'}`)
+			})
+		}
+
+		function requestCameraPermission() {
+			h5packBridge.camera.requestPermission().then(res => {
+				console.log('申请res', res)
+			})
+		}
+
+		function openCamera() {
+			h5packBridge.camera.open().then(res => {
+				console.log('拍照res', res)
+				document.getElementById('cameraPreview').src = res?.base64
+			})
+		}
+
+		function chooseImage() {
+			h5packBridge.camera.chooseImage().then(res => {
+				console.log('拍照res', res)
+				document.getElementById('cameraPreview').src = res[1]?.base64
+			})
+		}
 	</script>
 </html>

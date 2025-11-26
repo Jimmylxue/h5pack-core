@@ -6,7 +6,10 @@ import { promises } from 'fs'
 import { buildFailHandle } from './base/error'
 import { handlePackConfig } from './base/handleConfig'
 
-let tempDir: any
+/**
+ * 执行的路径
+ */
+export let tempDir: any
 
 async function main() {
 	try {

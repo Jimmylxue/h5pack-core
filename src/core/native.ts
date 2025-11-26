@@ -13,6 +13,7 @@ import { handleCustomConfig } from './customConfigHandle'
 import { PackError } from 'src/base/error'
 import { spinner } from 'src/base/spinner'
 import { packConfig } from 'src/base/handleConfig'
+import { handleNativePermission } from './permission'
 /**
  * 打包完成后的操作
  */
@@ -78,6 +79,9 @@ export async function processAndroid(rootDir: string) {
 	await copyBuildSource(rootDir, originErrorMessage => {
 		throw new PackError(COPY_BUILD_SOURCE_ERROR, originErrorMessage)
 	})
+
+	spinner.start('🚩 Handle Custom Permission ......')
+	await handleNativePermission(rootDir)
 
 	spinner.start('🚩 Install Dependencies ......')
 	/**

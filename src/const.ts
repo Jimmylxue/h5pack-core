@@ -45,3 +45,9 @@ export const GENERATE_APP_LOGO_ERROR = {
 	code: 10007,
 	message: 'appLogo启动页生成异常，请检查h5pack.json中logo相关配置',
 }
+
+export const APP_NATIVE_PERMISSION_CONFIG_ERROR = {
+	code: 10008,
+	message:
+		'nativePermission配置异常，请检查h5pack.json中nativePermission相关配置',
+}
