@@ -1,10 +1,13 @@
-<br>
-
 <h1 align="center">Welcome to h5pack 👋</h1>
 
 <br>
 
 即兴的产物，h5pack 是一个跨平台(支持 mac/windows)的 app 打包工具，只需简单的配置和一个指令，即可将 H5 直接打包成 Android APK， 且拥有直接调用原生的能力！🎉🎉
+
+
+https://github.com/user-attachments/assets/0ea5b29f-849d-46a2-af35-130273b69965
+
+
 
 ## 效果
 
@@ -19,6 +22,9 @@
 App 效果
 
 <img width="802" alt="image" src="https://github.com/user-attachments/assets/482385ca-491f-4c3f-9c5e-7e910daa86a8" />
+
+<img width="1522" height="1680" alt="image" src="https://github.com/user-attachments/assets/982c38a7-3a43-40a5-8cff-1a03afb24b73" />
+
 
 [视频效果](https://image.jimmyxuexue.top/video/27_1721291477.mp4)
 
