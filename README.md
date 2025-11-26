@@ -4,7 +4,7 @@
 
 <br>
 
-即兴的产物，h5pack 是一个跨平台(支持 mac/windows)的 app 打包工具，只需简单的配置和一个指令，即可将 H5 直接打包成 Android APK
+即兴的产物，h5pack 是一个跨平台(支持 mac/windows)的 app 打包工具，只需简单的配置和一个指令，即可将 H5 直接打包成 Android APK， 且拥有直接调用原生的能力！🎉🎉
 
 ## 效果
 
@@ -54,7 +54,8 @@ pnpm add -D h5pack
 	"output": "./", // 打包完成后app 输出位置
 	"log": false, // 是否开启完整打包日志
 	"registry": "github", // github||gitee  资源镜像下载的地址，如因代理问题可以配置为gitee
-	"logo": "./src/assets/splash.svg" // app 在桌面显示的logo
+	"logo": "./src/assets/splash.svg", // app 在桌面显示的logo
+	"nativePermission": ["CAMERA", "LOCATION"]
 }
 ```
 
