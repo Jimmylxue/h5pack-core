@@ -6,5 +6,5 @@
 	"log":true,
 	"registry": "github",
 	"logo": "./src/assets/splash.svg",
-	"nativePermission":["CAMERA"]
+	"nativePermission":["CAMERA","LOCATION"]
 }
