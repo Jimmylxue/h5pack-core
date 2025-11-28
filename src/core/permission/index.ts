@@ -4,6 +4,7 @@ import { packConfig } from 'src/base/handleConfig'
 import { spinner } from 'src/base/spinner'
 import { APP_NATIVE_PERMISSION_CONFIG_ERROR } from 'src/const'
 import { processCameraPermission } from './modules/camera'
+import { processLocationPermission } from './modules/location'
 const PermissionList = ['CAMERA', 'LOCATION']
 
 export async function handleNativePermission(rootDir: string) {
@@ -35,6 +36,8 @@ export async function handleNativePermission(rootDir: string) {
 		switch (element) {
 			case 'CAMERA':
 				await processCameraPermission()
+			case 'LOCATION':
+				await processLocationPermission()
 				break
 		}
 	}
