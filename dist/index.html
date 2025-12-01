@@ -16,18 +16,23 @@
 			<button onclick="requestCameraPermission()">申请相机权限</button>
 			<button onclick="openCamera()">跳转相机</button>
 			<button onclick="chooseImage()">打开相册</button>
+			<button onclick="scan()">扫码</button>
 			<img id="cameraPreview" alt="" />
-			<script src="./vconsole.js"></script>
+			<div>扫码结果：<span id="scanRes"></span></div>
+
+			<div>
+				<button onclick="getCurrentPosition()">查看当前位置</button>
+				<div id="position"></div>
+			</div>
+			<script>
+				new VConsole()
+			</script>
 		</div>
 	</body>
 	<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
 	<script>
 		// VConsole 默认会挂载到 `window.VConsole` 上
 		var vConsole = new window.VConsole()
-	</script>
-
-	<script>
-		new VConsole()
 	</script>
 
 	<script src="./h5PackBridge.min.js"></script>
@@ -57,6 +62,19 @@
 			h5packBridge.camera.chooseImage().then(res => {
 				console.log('拍照res', res)
 				document.getElementById('cameraPreview').src = res[1]?.base64
+			})
+		}
+
+		function scan() {
+			h5packBridge.camera.scan().then(res => {
+				document.getElementById('scanRes').textContent = res
+			})
+		}
+
+		function getCurrentPosition() {
+			h5packBridge.location.getCurrentPosition().then(res => {
+				console.log('地址res', res)
+				document.getElementById('position').textContent = JSON.stringify(res)
 			})
 		}
 	</script>

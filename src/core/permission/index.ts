@@ -36,6 +36,7 @@ export async function handleNativePermission(rootDir: string) {
 		switch (element) {
 			case 'CAMERA':
 				await processCameraPermission()
+				break
 			case 'LOCATION':
 				await processLocationPermission()
 				break
