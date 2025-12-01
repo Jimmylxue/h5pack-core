@@ -4,6 +4,6 @@
 	"splash":"./assets/splash.svg",
 	"output":"./",
 	"log":true,
-	"registry": "github",
+	"registry": "gitee",
 	"logo": "./assets/splash.svg"
 }

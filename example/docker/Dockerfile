@@ -51,6 +51,11 @@ ENV PATH="/usr/local/bin:${PATH}"
 # 设置淘宝镜像 - 这个是可选配置 github-action 自带翻墙 不用配置 如果国内用户本地docker 需要配置一下
 RUN npm config set registry https://registry.npmmirror.com
 
+ENV npm_config_sharp_binary_host="https://npmmirror.com/mirrors/sharp"
+ENV npm_config_sharp_libvips_binary_host="https://npmmirror.com/mirrors/sharp-libvips"
+ENV npm_config_registry="https://registry.npmmirror.com"
+ENV npm_config_phantomjs_cdnurl="https://npmmirror.com/mirrors/phantomjs"
+
 # 安装yarn
 RUN npm install -g yarn@1.22.22
 
