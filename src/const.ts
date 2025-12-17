@@ -51,3 +51,13 @@ export const APP_NATIVE_PERMISSION_CONFIG_ERROR = {
 	message:
 		'nativePermission配置异常，请检查h5pack.json中nativePermission相关配置',
 }
+
+export const SIGNING_CONFIG_ERROR = {
+	code: 10009,
+	message: '签名配置异常，请检查h5pack.json中keystore相关配置',
+}
+
+export const BUILD_FORMAT_ERROR = {
+	code: 10010,
+	message: '构建类型异常，请设置buildFormat为apk或aab',
+}

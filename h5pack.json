@@ -1,10 +1,13 @@
 {
 	"entry": "./dist",
 	"name": "my-app",
-	"splash":"./src/assets/splash.svg",
-	"output":"./",
-	"log":true,
+	"splash": "./src/assets/splash.svg",
+	"output": "./",
+	"log": true,
 	"registry": "github",
 	"logo": "./src/assets/splash.svg",
-	"nativePermission":["CAMERA","LOCATION"]
+	"nativePermission": ["CAMERA", "LOCATION"],
+	"buildFormat": "apk",
+	"APP_ANDROID_VERSION": "1.7.0",
+	"APP_ANDROID_VERSION_CODE": "1"
 }

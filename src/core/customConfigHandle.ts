@@ -1,5 +1,5 @@
 import { writeFile, copyFile } from 'fs/promises'
-import { resolve, basename } from 'path'
+import { resolve, basename, join } from 'path'
 import { isAvailableDir } from 'src/file'
 import { PackError } from 'src/base/error'
 import { handleCommand } from 'src/command'
@@ -7,9 +7,11 @@ import {
 	GENERATE_APP_LOGO_ERROR,
 	GENERATE_ENV_ERROR,
 	GENERATE_SPLASH_ERROR,
+	SIGNING_CONFIG_ERROR,
 } from 'src/const'
 import { packConfig } from 'src/base/handleConfig'
 import { spinner } from 'src/base/spinner'
+import { readFile, writeFile as writeFileFs } from 'fs/promises'
 
 /**
  * 处理 打包时的 env文件
@@ -17,6 +19,8 @@ import { spinner } from 'src/base/spinner'
 async function handleEnvFile(yarnCommandDir: string) {
 	const envContent = `
   APP_NAME=${packConfig.name || 'H5Pack'}
+  APP_ANDROID_VERSION=${packConfig.APP_ANDROID_VERSION || '1.0.0'}
+  APP_ANDROID_VERSION_CODE=${packConfig.APP_ANDROID_VERSION_CODE || '1'}	
   `
 	try {
 		await writeFile(resolve(yarnCommandDir, '.env'), envContent, 'utf-8')
@@ -86,10 +90,59 @@ async function handleAppLogo(yarnCommandDir: string) {
 	}
 }
 
+// async function handleSigning(yarnCommandDir: string) {
+// 	if (
+// 		!packConfig.keystorePath ||
+// 		!packConfig.storePassword ||
+// 		!packConfig.keyAlias ||
+// 		!packConfig.keyPassword
+// 	) {
+// 		return
+// 	}
+// 	try {
+// 		const keystoreAbs = resolve(process.cwd(), packConfig.keystorePath)
+// 		if (!isAvailableDir(keystoreAbs)) {
+// 			throw new Error('keystorePath is not a available path')
+// 		}
+// 		const appDir = resolve(yarnCommandDir, './android/app')
+// 		const targetStore = resolve(appDir, './keystore.jks')
+// 		await copyFile(keystoreAbs, targetStore)
+// 		const buildGradlePath = resolve(appDir, './build.gradle')
+// 		let gradleContent = await readFile(buildGradlePath, 'utf-8')
+// 		const hasAndroidBlock = /android\s*\{[\s\S]*\}/.test(gradleContent)
+// 		if (!hasAndroidBlock) {
+// 			throw new Error('build.gradle has no android block')
+// 		}
+// 		if (
+// 			!/signingConfigs\s*\{[\s\S]*release\s*\{[\s\S]*\}\s*\}/.test(
+// 				gradleContent
+// 			)
+// 		) {
+// 			gradleContent = gradleContent.replace(
+// 				/android\s*\{/,
+// 				`android {\n    signingConfigs {\n        release {\n            storeFile file('./keystore.jks')\n            storePassword '${packConfig.storePassword}'\n            keyAlias '${packConfig.keyAlias}'\n            keyPassword '${packConfig.keyPassword}'\n        }\n    }\n`
+// 			)
+// 		}
+// 		const releaseBlockRegex = /buildTypes\s*\{\s*release\s*\{([\s\S]*?)\}\s*\}/
+// 		const match = gradleContent.match(releaseBlockRegex)
+// 		if (match && !/signingConfig\s+signingConfigs\.release/.test(match[1])) {
+// 			const updatedRelease = match[0].replace(
+// 				/release\s*\{/,
+// 				`release {\n            signingConfig signingConfigs.release\n`
+// 			)
+// 			gradleContent = gradleContent.replace(releaseBlockRegex, updatedRelease)
+// 		}
+// 		await writeFileFs(buildGradlePath, gradleContent, 'utf-8')
+// 	} catch (error: any) {
+// 		throw new PackError(SIGNING_CONFIG_ERROR, error.message)
+// 	}
+// }
+
 export async function handleCustomConfig(yarnCommandDir: string) {
 	await handleEnvFile(yarnCommandDir)
 	await handleSplash(yarnCommandDir)
 	await handleAppLogo(yarnCommandDir)
+	// await handleSigning(yarnCommandDir)
 	spinner.stop()
 	spinner.succeed('✅ Custom Config Success')
 }

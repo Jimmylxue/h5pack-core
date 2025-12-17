@@ -20,5 +20,6 @@ h5pack.json
 pnpm-lock.json
 dist/
 app-release.apk
+app-release.aab
 example/
 .github/

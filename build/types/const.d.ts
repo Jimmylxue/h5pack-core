@@ -41,3 +41,11 @@ export declare const APP_NATIVE_PERMISSION_CONFIG_ERROR: {
     code: number;
     message: string;
 };
+export declare const SIGNING_CONFIG_ERROR: {
+    code: number;
+    message: string;
+};
+export declare const BUILD_FORMAT_ERROR: {
+    code: number;
+    message: string;
+};

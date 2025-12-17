@@ -14,6 +14,7 @@ import { PackError } from 'src/base/error'
 import { spinner } from 'src/base/spinner'
 import { packConfig } from 'src/base/handleConfig'
 import { handleNativePermission } from './permission'
+import { YARN_INSTALL_ERROR } from 'src/const'
 /**
  * 打包完成后的操作
  */
@@ -27,13 +28,18 @@ async function buildSuccessHandle(
 		if (!isAvailablePath) {
 			throw new Error('packConfig.output is not a available path')
 		}
-		await promises.copyFile(
-			join(
-				rootDir,
-				'./h5pack-native/android/app/build/outputs/apk/release/app-release.apk'
-			),
-			resolve(outputPath, 'app-release.apk')
-		)
+		const isAab = packConfig.buildFormat === 'aab'
+		const originPath = isAab
+			? join(
+					rootDir,
+					'./h5pack-native/android/app/build/outputs/bundle/release/app-release.aab'
+			  )
+			: join(
+					rootDir,
+					'./h5pack-native/android/app/build/outputs/apk/release/app-release.apk'
+			  )
+		const goalName = isAab ? 'app-release.aab' : 'app-release.apk'
+		await promises.copyFile(originPath, resolve(outputPath, goalName))
 	} catch (error: any) {
 		errorHandle(error.message || 'packConfig.output is not a available path')
 	}
@@ -89,7 +95,7 @@ export async function processAndroid(rootDir: string) {
 	 */
 	await handleCommand(yarnCommandDir, 'yarn', [], originErrorMessage => {
 		spinner.stop()
-		throw new PackError(GIT_CLONE_ERROR, originErrorMessage)
+		throw new PackError(YARN_INSTALL_ERROR, originErrorMessage)
 	})
 
 	spinner.succeed('✅ Dependencies Installed!')
@@ -105,10 +111,12 @@ export async function processAndroid(rootDir: string) {
 	/**
 	 * 打包
 	 */
+	const isAab = packConfig.buildFormat === 'aab'
+	const releaseCommand = isAab ? 'release:aab' : 'release'
 	await handleCommand(
 		yarnCommandDir,
 		'yarn',
-		['release'],
+		[releaseCommand],
 		originErrorMessage => {
 			spinner.stop()
 			throw new PackError(BUILD_APP_ERROR, originErrorMessage)
