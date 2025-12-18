@@ -26,6 +26,9 @@ importers:
       pako:
         specifier: 1.0.6
         version: 1.0.6
+      properties-parser:
+        specifier: ^0.6.0
+        version: 0.6.0
       protobufjs:
         specifier: 6.9.0
         version: 6.9.0
@@ -2317,6 +2320,10 @@ packages:
   prompts@2.4.2:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
     engines: {node: '>= 6'}
+
+  properties-parser@0.6.0:
+    resolution: {integrity: sha512-qvr2cSmoA0dln0MARAKwBzPkkXn7FqwX+RVVNpMdMJc7rt9mqO2cXwluxtux9fHrLhjnPFaQkS8BM0kFrTCnSw==}
+    engines: {node: '>= 0.3.1'}
 
   protobufjs@6.9.0:
     resolution: {integrity: sha512-LlGVfEWDXoI/STstRDdZZKb/qusoAWUnmLg9R8OLSO473mBLWHowx8clbX5/+mKDEI+v7GzjoK9tRPZMMcoTrg==}
@@ -5666,6 +5673,8 @@ snapshots:
     dependencies:
       kleur: 3.0.3
       sisteransi: 1.0.5
+
+  properties-parser@0.6.0: {}
 
   protobufjs@6.9.0:
     dependencies:

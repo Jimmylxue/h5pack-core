@@ -9,5 +9,9 @@
 	"nativePermission": ["CAMERA", "LOCATION"],
 	"buildFormat": "apk",
 	"APP_ANDROID_VERSION": "1.7.0",
-	"APP_ANDROID_VERSION_CODE": "1"
+	"APP_ANDROID_VERSION_CODE": "1",
+	"keystorePath": "./my-release-key.jks",
+	"storePassword": "jimmycheese",
+	"keyAlias": "my-alias",
+	"keyPassword": "jimmycheese"
 }

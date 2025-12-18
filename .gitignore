@@ -5,3 +5,6 @@
 app-release.apk
 
 node_modules/
+
+*.jks
+*.keystore

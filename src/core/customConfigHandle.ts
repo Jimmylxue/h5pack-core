@@ -12,6 +12,7 @@ import {
 import { packConfig } from 'src/base/handleConfig'
 import { spinner } from 'src/base/spinner'
 import { readFile, writeFile as writeFileFs } from 'fs/promises'
+import { handleSigning } from './sign/inex'
 
 /**
  * 处理 打包时的 env文件
@@ -91,23 +92,11 @@ async function handleAppLogo(yarnCommandDir: string) {
 }
 
 // async function handleSigning(yarnCommandDir: string) {
-// 	if (
-// 		!packConfig.keystorePath ||
-// 		!packConfig.storePassword ||
-// 		!packConfig.keyAlias ||
-// 		!packConfig.keyPassword
-// 	) {
-// 		return
-// 	}
+
 // 	try {
 // 		const keystoreAbs = resolve(process.cwd(), packConfig.keystorePath)
-// 		if (!isAvailableDir(keystoreAbs)) {
-// 			throw new Error('keystorePath is not a available path')
-// 		}
-// 		const appDir = resolve(yarnCommandDir, './android/app')
-// 		const targetStore = resolve(appDir, './keystore.jks')
-// 		await copyFile(keystoreAbs, targetStore)
-// 		const buildGradlePath = resolve(appDir, './build.gradle')
+
+// const buildGradlePath = resolve(appDir, './build.gradle')
 // 		let gradleContent = await readFile(buildGradlePath, 'utf-8')
 // 		const hasAndroidBlock = /android\s*\{[\s\S]*\}/.test(gradleContent)
 // 		if (!hasAndroidBlock) {
@@ -142,7 +131,7 @@ export async function handleCustomConfig(yarnCommandDir: string) {
 	await handleEnvFile(yarnCommandDir)
 	await handleSplash(yarnCommandDir)
 	await handleAppLogo(yarnCommandDir)
-	// await handleSigning(yarnCommandDir)
+	await handleSigning(yarnCommandDir)
 	spinner.stop()
 	spinner.succeed('✅ Custom Config Success')
 }
