@@ -14,8 +14,9 @@ export type TPackConfig = {
 	storePassword?: string
 	keyAlias?: string
 	keyPassword?: string
-	APP_ANDROID_VERSION?: string
-	APP_ANDROID_VERSION_CODE?: string
+	packageName?: string
+	versionName?: string
+	versionCode?: string
 }
 
 export type TPackError = {
