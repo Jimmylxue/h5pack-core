@@ -1,18 +1,18 @@
 {
 	"entry": "./dist",
-	"name": "my-app",
-	"splash": "./src/assets/splash.svg",
+	"name": "H5PackApp",
 	"output": "./",
-	"log": true,
 	"registry": "github",
-	"logo": "./src/assets/splash.svg",
-	"nativePermission": ["CAMERA", "LOCATION", "RECORD_AUDIO"],
 	"buildFormat": "apk",
 	"packageName": "com.h5pack.native",
-	"versionName": "1.7.0",
+	"versionName": "1.0.0",
 	"versionCode": "1",
-	"keystorePath": "./my-release-key.jks",
-	"storePassword": "jimmycheese",
-	"keyAlias": "my-alias",
-	"keyPassword": "jimmycheese"
+	"logo": "",
+	"splash": "",
+	"nativePermission": [],
+	"keystorePath": "",
+	"storePassword": "",
+	"keyAlias": "",
+	"keyPassword": "",
+	"log": true
 }

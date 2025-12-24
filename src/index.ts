@@ -5,6 +5,8 @@ import { processAndroid } from './core/native'
 import { promises } from 'fs'
 import { buildFailHandle } from './base/error'
 import { handlePackConfig } from './base/handleConfig'
+import { doctor } from './command/doctor'
+import { init } from './command/init'
 
 /**
  * 执行的路径
@@ -23,13 +25,24 @@ async function main() {
 	}
 }
 
-export default () => {
+export default async () => {
+	const args = process.argv.slice(2)
+	const command = args[0]
+	if (command === 'doctor') {
+		await doctor()
+		return
+	}
+	if (command === 'init') {
+		await init()
+		return
+	}
 	handlePackConfig()
 	main()
 }
 
 process.on('SIGINT', async () => {
-	await removeDir(tempDir!)
-	// 在这里执行清理操作
-	process.exit() // 退出程序
+	if (tempDir) {
+		await removeDir(tempDir!)
+	}
+	process.exit()
 })
