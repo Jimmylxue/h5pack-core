@@ -5,4 +5,5 @@ export declare const PERMISSION_MAP: {
     LOCATION: string[];
     microphone: string[];
     storage: string[];
+    RECORD_AUDIO: string[];
 };

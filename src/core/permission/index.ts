@@ -5,7 +5,8 @@ import { spinner } from 'src/base/spinner'
 import { APP_NATIVE_PERMISSION_CONFIG_ERROR } from 'src/const'
 import { processCameraPermission } from './modules/camera'
 import { processLocationPermission } from './modules/location'
-const PermissionList = ['CAMERA', 'LOCATION']
+import { processRecordAudioPermission } from './modules/recodAudio'
+const PermissionList = ['CAMERA', 'LOCATION', 'RECORD_AUDIO']
 
 export async function handleNativePermission(rootDir: string) {
 	const nativePermission = packConfig.nativePermission
@@ -39,6 +40,9 @@ export async function handleNativePermission(rootDir: string) {
 				break
 			case 'LOCATION':
 				await processLocationPermission()
+				break
+			case 'RECORD_AUDIO':
+				await processRecordAudioPermission()
 				break
 		}
 	}

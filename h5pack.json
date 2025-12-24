@@ -6,7 +6,7 @@
 	"log": true,
 	"registry": "github",
 	"logo": "./src/assets/splash.svg",
-	"nativePermission": ["CAMERA", "LOCATION"],
+	"nativePermission": ["CAMERA", "LOCATION", "RECORD_AUDIO"],
 	"buildFormat": "apk",
 	"packageName": "com.h5pack.native",
 	"versionName": "1.7.0",

@@ -1,4 +1,4 @@
-export type TNativePermission = 'CAMERA' | 'LOCATION'
+export type TNativePermission = 'CAMERA' | 'LOCATION' | 'RECORD_AUDIO'
 
 export type TPackConfig = {
 	entry: string
