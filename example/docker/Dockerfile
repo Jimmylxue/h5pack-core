@@ -42,9 +42,17 @@ RUN apt-get update && apt-get install -y curl && apt-get clean
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN curl -o node.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz \
-  && tar -xzf node.tar.gz -C /usr/local --strip-components=1 \
-  && rm node.tar.gz
+ARG TARGETARCH
+# 根据容器架构自动选择 Node 二进制包
+RUN set -eux; \
+  case "${TARGETARCH}" in \
+  "amd64") NODE_DIST="linux-x64" ;; \
+  "arm64") NODE_DIST="linux-arm64" ;; \
+  *) echo "Unsupported TARGETARCH: ${TARGETARCH}"; exit 1 ;; \
+  esac; \
+  curl -o node.tar.gz "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-${NODE_DIST}.tar.gz"; \
+  tar -xzf node.tar.gz -C /usr/local --strip-components=1; \
+  rm node.tar.gz
 
 ENV PATH="/usr/local/bin:${PATH}"
 

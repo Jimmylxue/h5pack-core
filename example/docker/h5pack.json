@@ -1,9 +1,9 @@
 {
 	"entry": "./dist",
 	"name": "my-app",
-	"splash":"./assets/splash.svg",
-	"output":"./",
-	"log":true,
+	"splash": "./assets/splash.svg",
+	"output": "./",
+	"log": true,
 	"registry": "gitee",
 	"logo": "./assets/splash.svg"
 }
