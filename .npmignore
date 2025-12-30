@@ -25,3 +25,4 @@ example/
 .github/
 *.jks
 *.keystore
+h5pack-native/

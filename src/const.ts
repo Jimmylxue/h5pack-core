@@ -61,3 +61,8 @@ export const BUILD_FORMAT_ERROR = {
 	code: 10010,
 	message: '构建类型异常，请设置buildFormat为apk或aab',
 }
+
+export const DEV_ERROR = {
+	code: 10011,
+	message: 'dev环境启动异常',
+}

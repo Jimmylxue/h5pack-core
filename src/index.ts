@@ -7,6 +7,7 @@ import { buildFailHandle } from './base/error'
 import { handlePackConfig } from './base/handleConfig'
 import { doctor } from './command/doctor'
 import { init } from './command/init'
+import { processAndroidDev } from './command/dev'
 
 /**
  * 执行的路径
@@ -34,6 +35,16 @@ export default async () => {
 	}
 	if (command === 'init') {
 		await init()
+		return
+	}
+	if (command === 'dev') {
+		handlePackConfig()
+		const isWatch = args.includes('--watch')
+		const isStart = args.includes('--start')
+		await processAndroidDev(process.cwd(), {
+			watch: isWatch,
+			start: isStart,
+		})
 		return
 	}
 	handlePackConfig()

@@ -4,6 +4,7 @@ import { isAvailableDir } from 'src/file'
 import { PackError } from 'src/base/error'
 import { handleCommand } from 'src/command'
 import {
+	DEV_ERROR,
 	GENERATE_APP_LOGO_ERROR,
 	GENERATE_ENV_ERROR,
 	GENERATE_SPLASH_ERROR,
@@ -97,4 +98,26 @@ export async function handleCustomConfig(yarnCommandDir: string) {
 	await handleSigning(yarnCommandDir)
 	spinner.stop()
 	spinner.succeed('✅ Custom Config Success')
+}
+
+export async function handleStartLocal(yarnCommandDir: string) {
+	try {
+		await handleCommand(
+			yarnCommandDir,
+			'yarn',
+			['dev:android:local'],
+			originErrorMessage => {
+				throw new Error(originErrorMessage)
+			}
+		)
+	} catch (error: any) {
+		throw new PackError(DEV_ERROR, error.message)
+	}
+}
+
+export async function handleDevCustomConfig(yarnCommandDir: string) {
+	await handleSplash(yarnCommandDir)
+	await handleAppLogo(yarnCommandDir)
+	spinner.stop()
+	spinner.succeed('✅ Dev Custom Config Success')
 }

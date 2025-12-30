@@ -1,0 +1,92 @@
+import { spinner } from 'src/base/spinner'
+import { join, resolve } from 'path'
+import { isAvailableDir } from 'src/file'
+import { handleCommand } from 'src/command'
+import {
+	AndroidRepositories,
+	COPY_BUILD_SOURCE_ERROR,
+	GIT_CLONE_ERROR,
+	YARN_INSTALL_ERROR,
+} from 'src/const'
+import { packConfig } from 'src/base/handleConfig'
+import { PackError } from 'src/base/error'
+import { copyBuildSource } from 'src/core/native'
+import { watch } from 'fs'
+import {
+	handleDevCustomConfig,
+	handleStartLocal,
+} from 'src/core/customConfigHandle'
+
+function watchFile(rootDir: string) {
+	const entryPath = resolve(process.cwd(), packConfig.entry)
+	if (isAvailableDir(entryPath)) {
+		spinner.info(`👀 Watching for changes in ${entryPath} ......`)
+		let timer: NodeJS.Timeout
+		watch(entryPath, { recursive: true }, () => {
+			if (timer) clearTimeout(timer)
+			timer = setTimeout(async () => {
+				spinner.start('🔄 File changed, syncing ......')
+				await copyBuildSource(rootDir, msg => {
+					spinner.fail(`❌ Sync failed: ${msg}`)
+				})
+				spinner.succeed('✅ Sync success!')
+			}, 300)
+		})
+	}
+}
+
+/**
+ * dev 指令执行的操作
+ */
+export async function processAndroidDev(
+	rootDir: string,
+	options: { watch: boolean; start: boolean }
+) {
+	const yarnCommandDir = join(rootDir, './h5pack-native')
+	spinner.start('🚩 Prepare Native Source (Dev) ......')
+	// 如果不存在则克隆仓库
+	if (!isAvailableDir(yarnCommandDir)) {
+		await handleCommand(
+			rootDir,
+			'git',
+			['clone', AndroidRepositories[packConfig.registry], yarnCommandDir],
+			originErrorMessage => {
+				spinner.stop()
+				throw new PackError(GIT_CLONE_ERROR, originErrorMessage)
+			}
+		)
+		spinner.succeed('✅ download success!')
+	} else {
+		spinner.info('✅ use local h5pack-native ......')
+	}
+
+	// 拷贝 H5 资源
+	await copyBuildSource(rootDir, originErrorMessage => {
+		throw new PackError(COPY_BUILD_SOURCE_ERROR, originErrorMessage)
+	})
+
+	if (options.watch) {
+		watchFile(rootDir)
+	}
+
+	if (options.start) {
+		await handleStartLocal(yarnCommandDir)
+	}
+
+	// 仅处理启动页与图标
+	spinner.start('🚩 Handle Dev Custom Config ......')
+	await handleDevCustomConfig(yarnCommandDir)
+	spinner.succeed('✅ Handle Success!')
+
+	// 安装依赖，便于在本地 Android Studio 或 yarn android 调试
+	spinner.start('🚩 Install Dependencies ......')
+	await handleCommand(yarnCommandDir, 'yarn', [], originErrorMessage => {
+		spinner.stop()
+		throw new PackError(YARN_INSTALL_ERROR, originErrorMessage)
+	})
+	spinner.succeed('✅ Dependencies Installed!')
+
+	spinner.succeed(
+		'🎉 Dev project is ready. Open h5pack-native/android in Android Studio or cd h5pack-native && run yarn dev:android:local'
+	)
+}

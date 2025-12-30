@@ -48,7 +48,7 @@ async function buildSuccessHandle(
 /**
  * 复制打包资源
  */
-async function copyBuildSource(
+export async function copyBuildSource(
 	rootDir: string,
 	errorHandle: (originErrorMessage: string) => void
 ) {
