@@ -1,7 +1,8 @@
 import { spinner } from 'src/base/spinner'
-import { join, resolve } from 'path'
+import { join, resolve, dirname, relative } from 'path'
 import { isAvailableDir } from 'src/file'
 import { handleCommand } from 'src/command'
+import chalk from 'chalk'
 import {
 	AndroidRepositories,
 	COPY_BUILD_SOURCE_ERROR,
@@ -11,26 +12,39 @@ import {
 import { packConfig } from 'src/base/handleConfig'
 import { PackError } from 'src/base/error'
 import { copyBuildSource } from 'src/core/native'
-import { watch } from 'fs'
+import { watch, existsSync, mkdirSync, copyFileSync, unlinkSync } from 'fs'
 import {
 	handleDevCustomConfig,
 	handleStartLocal,
 } from 'src/core/customConfigHandle'
 
+function syncOne(rootDir: string, changedAbsPath: string, entryAbs: string) {
+	const rel = relative(entryAbs, changedAbsPath)
+	const destRoot = join(rootDir, './h5pack-native/public/webview/dist')
+	const dest = join(destRoot, rel)
+	const dir = dirname(dest)
+	if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+	if (existsSync(changedAbsPath)) {
+		copyFileSync(changedAbsPath, dest)
+	} else {
+		if (existsSync(dest)) unlinkSync(dest)
+	}
+}
+
 function watchFile(rootDir: string) {
 	const entryPath = resolve(process.cwd(), packConfig.entry)
 	if (isAvailableDir(entryPath)) {
-		spinner.info(`👀 Watching for changes in ${entryPath} ......`)
-		let timer: NodeJS.Timeout
-		watch(entryPath, { recursive: true }, () => {
-			if (timer) clearTimeout(timer)
-			timer = setTimeout(async () => {
-				spinner.start('🔄 File changed, syncing ......')
-				await copyBuildSource(rootDir, msg => {
-					spinner.fail(`❌ Sync failed: ${msg}`)
-				})
-				spinner.succeed('✅ Sync success!')
-			}, 300)
+		console.log(chalk.cyan(`👀 Watching for changes in ${entryPath} ......`))
+		watch(entryPath, { recursive: true }, (_, filename) => {
+			if (!filename) return
+			const changedAbs = resolve(entryPath, filename)
+			try {
+				console.log(chalk.yellow(`🔄  Syncing change ${changedAbs} ......`))
+				syncOne(rootDir, changedAbs, entryPath)
+				console.log(chalk.green('✅ Sync success!'))
+			} catch (e: any) {
+				console.log(chalk.red(`❌ Sync failed: ${e.message || e}`))
+			}
 		})
 	}
 }
@@ -43,7 +57,7 @@ export async function processAndroidDev(
 	options: { watch: boolean; start: boolean }
 ) {
 	const yarnCommandDir = join(rootDir, './h5pack-native')
-	spinner.start('🚩 Prepare Native Source (Dev) ......')
+	console.log(chalk.cyan('🚩 Prepare Native Source (Dev) ......'))
 	// 如果不存在则克隆仓库
 	if (!isAvailableDir(yarnCommandDir)) {
 		await handleCommand(
@@ -51,13 +65,13 @@ export async function processAndroidDev(
 			'git',
 			['clone', AndroidRepositories[packConfig.registry], yarnCommandDir],
 			originErrorMessage => {
-				spinner.stop()
+				console.log(chalk.red(`❌ Download failed: ${originErrorMessage}`))
 				throw new PackError(GIT_CLONE_ERROR, originErrorMessage)
 			}
 		)
-		spinner.succeed('✅ download success!')
+		console.log(chalk.green('✅ download success!'))
 	} else {
-		spinner.info('✅ use local h5pack-native ......')
+		console.log(chalk.cyan('✅ use local h5pack-native ......'))
 	}
 
 	// 拷贝 H5 资源
@@ -70,6 +84,7 @@ export async function processAndroidDev(
 	}
 
 	if (options.start) {
+		console.log(chalk.cyan('🚩 Start Local Server ......'))
 		await handleStartLocal(yarnCommandDir)
 	}
 
