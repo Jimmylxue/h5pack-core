@@ -41,9 +41,36 @@ export default async () => {
 		handlePackConfig()
 		const isWatch = args.includes('--watch')
 		const isStart = args.includes('--start')
+		const serverArg = args.find(a => a.startsWith('--server='))
+		const reverseArg = args.find(a => a.startsWith('--reverse='))
+		let devPort: number | undefined
+		let reversePort: number | undefined
+		if (serverArg) {
+			const val = serverArg.split('=')[1]
+			if (/^https?:\/\//.test(val)) {
+				try {
+					const u = new URL(val)
+					devPort = u.port
+						? parseInt(u.port, 10)
+						: u.protocol === 'https:'
+						? 443
+						: 80
+				} catch {}
+			} else if (/^\d+$/.test(val)) {
+				devPort = parseInt(val, 10)
+			}
+		}
+		if (reverseArg) {
+			const val = reverseArg.split('=')[1]
+			if (/^\d+$/.test(val)) {
+				reversePort = parseInt(val, 10)
+			}
+		}
 		await processAndroidDev(process.cwd(), {
 			watch: isWatch,
 			start: isStart,
+			devPort,
+			reversePort,
 		})
 		return
 	}

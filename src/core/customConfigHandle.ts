@@ -16,12 +16,18 @@ import { handleSigning } from './sign/inex'
 /**
  * 处理 打包时的 env文件
  */
-async function handleEnvFile(yarnCommandDir: string) {
+export async function handleEnvFile(
+	yarnCommandDir: string,
+	isDevMode: boolean = false,
+	port?: number
+) {
 	const envContent = `
   APP_NAME=${packConfig.name || 'H5Pack'}
   APP_ANDROID_VERSION=${packConfig.versionName || '1.0.0'}
   APP_ANDROID_VERSION_CODE=${packConfig.versionCode || '1'}	
-  APP_PACKAGE_NAME=${packConfig.packageName || 'com.h5pack.native'}	
+  APP_PACKAGE_NAME=${packConfig.packageName || 'com.h5pack.native'}		
+  APP_WEBVIEW_DEV_ENABLED=${isDevMode ? 'true' : 'false'}
+  APP_WEBVIEW_DEV_PORT=${port || '9996'}
   `
 	try {
 		await writeFile(resolve(yarnCommandDir, '.env'), envContent, 'utf-8')
@@ -106,6 +112,21 @@ export async function handleStartLocal(yarnCommandDir: string) {
 			yarnCommandDir,
 			'yarn',
 			['dev:android:local'],
+			originErrorMessage => {
+				throw new Error(originErrorMessage)
+			}
+		)
+	} catch (error: any) {
+		throw new PackError(DEV_ERROR, error.message)
+	}
+}
+
+export async function handleServerMode(yarnCommandDir: string) {
+	try {
+		await handleCommand(
+			yarnCommandDir,
+			'yarn',
+			['android'],
 			originErrorMessage => {
 				throw new Error(originErrorMessage)
 			}

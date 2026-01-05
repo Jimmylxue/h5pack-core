@@ -15,6 +15,8 @@ import { copyBuildSource } from 'src/core/native'
 import { watch, existsSync, mkdirSync, copyFileSync, unlinkSync } from 'fs'
 import {
 	handleDevCustomConfig,
+	handleEnvFile,
+	handleServerMode,
 	handleStartLocal,
 } from 'src/core/customConfigHandle'
 
@@ -54,7 +56,12 @@ function watchFile(rootDir: string) {
  */
 export async function processAndroidDev(
 	rootDir: string,
-	options: { watch: boolean; start: boolean }
+	options: {
+		watch: boolean
+		start: boolean
+		devPort?: number
+		reversePort?: number
+	}
 ) {
 	const yarnCommandDir = join(rootDir, './h5pack-native')
 	console.log(chalk.cyan('🚩 Prepare Native Source (Dev) ......'))
@@ -74,18 +81,60 @@ export async function processAndroidDev(
 		console.log(chalk.cyan('✅ use local h5pack-native ......'))
 	}
 
-	// 拷贝 H5 资源
-	await copyBuildSource(rootDir, originErrorMessage => {
-		throw new PackError(COPY_BUILD_SOURCE_ERROR, originErrorMessage)
+	/**
+	 * 安装依赖
+	 */
+	await handleCommand(yarnCommandDir, 'yarn', [], originErrorMessage => {
+		spinner.stop()
+		throw new PackError(YARN_INSTALL_ERROR, originErrorMessage)
 	})
 
-	if (options.watch) {
-		watchFile(rootDir)
-	}
+	/**
+	 * 是否开启 Server 模式，开启后会开启本地 Server 并注入 DEV 环境变量
+	 */
+	const isServerMode = options.devPort || options.reversePort
 
-	if (options.start) {
-		console.log(chalk.cyan('🚩 Start Local Server ......'))
-		await handleStartLocal(yarnCommandDir)
+	if (isServerMode) {
+		if (options.devPort) {
+			await handleEnvFile(yarnCommandDir, true, options.devPort)
+			console.log(
+				chalk.cyan(
+					`⚙️  Inject DEV env: APP_WEBVIEW_DEV_ENABLED=true, PORT=${options.devPort}`
+				)
+			)
+		}
+
+		if (options.reversePort) {
+			console.log(
+				chalk.cyan(
+					`🔁 adb reverse tcp:${options.reversePort} -> host tcp:${options.reversePort}`
+				)
+			)
+			await handleCommand(
+				process.cwd(),
+				'adb',
+				['reverse', `tcp:${options.reversePort}`, `tcp:${options.reversePort}`],
+				originErrorMessage => {
+					console.log(chalk.red(`❌ adb reverse failed: ${originErrorMessage}`))
+				}
+			)
+		}
+
+		await handleServerMode(yarnCommandDir)
+	} else {
+		// 拷贝 H5 资源
+		await copyBuildSource(rootDir, originErrorMessage => {
+			throw new PackError(COPY_BUILD_SOURCE_ERROR, originErrorMessage)
+		})
+
+		if (options.watch) {
+			watchFile(rootDir)
+		}
+
+		if (options.start) {
+			console.log(chalk.cyan('🚩 Start Local Server ......'))
+			await handleStartLocal(yarnCommandDir)
+		}
 	}
 
 	// 仅处理启动页与图标
