@@ -11,7 +11,7 @@ import {
 } from 'src/const'
 import { packConfig } from 'src/base/handleConfig'
 import { spinner } from 'src/base/spinner'
-import { handleSigning } from './sign/inex'
+import { handleSigning } from './sign/index'
 
 /**
  * 处理 打包时的 env文件
