@@ -24,7 +24,7 @@ export async function doctor() {
 			name: 'Java (JDK)',
 			command: 'javac -version',
 			required: true,
-			hint: 'Install JDK 11+ and set JAVA_HOME.',
+			hint: 'Install JDK 17+ and set JAVA_HOME.',
 		},
 		{
 			name: 'Android SDK (adb)',
