@@ -4,10 +4,17 @@ import babel from '@rollup/plugin-babel'
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import commonjs from '@rollup/plugin-commonjs'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const { dependencies } = require('./package.json')
 
 const extensions = ['.ts', '.tsx']
 
 const noDeclarationFiles = { compilerOptions: { declaration: false } }
+
+// 将 package.json 中的 dependencies 标记为外部依赖，不打包进 bundle
+const external = Object.keys(dependencies)
 
 function cjsConfig(prod, type) {
 	return {
@@ -18,8 +25,9 @@ function cjsConfig(prod, type) {
 				: `build/core.${type === 'cjs' ? 'cjs' : 'esm'}.js`,
 			format: type,
 			indent: false,
+			exports: 'default',
 		},
-		// external,
+		external,
 		plugins: [
 			nodeResolve({
 				extensions,

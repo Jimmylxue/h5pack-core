@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import { tempDir } from 'src'
+import { tempDir } from 'src/shared'
 import { manifestPath, PERMISSION_MAP } from './const'
 import { TNativePermission } from 'src/types/type'
 import xml2js from 'xml2js'

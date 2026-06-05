@@ -2,4 +2,4 @@
 
 const init = require('../index.js')
 
-init.default()
+init()

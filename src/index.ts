@@ -8,16 +8,12 @@ import { handlePackConfig } from './base/handleConfig'
 import { doctor } from './command/doctor'
 import { init } from './command/init'
 import { processAndroidDev } from './command/dev'
-
-/**
- * 执行的路径
- */
-export let tempDir: any
+import { tempDir, setTempDir } from './shared'
 
 async function main() {
 	try {
 		const rootDir = tmpdir()
-		tempDir = join(rootDir, 'app-build')
+		setTempDir(join(rootDir, 'app-build'))
 		await promises.mkdir(tempDir, { recursive: true })
 		await processAndroid(tempDir)
 	} catch (error: any) {
