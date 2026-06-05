@@ -4,7 +4,7 @@ import { removeDir } from './file'
 import { processAndroid } from './core/native'
 import { promises } from 'fs'
 import { buildFailHandle } from './base/error'
-import { handlePackConfig } from './base/handleConfig'
+import { handlePackConfig, packConfig } from './base/handleConfig'
 import { doctor } from './command/doctor'
 import { init } from './command/init'
 import { processAndroidDev } from './command/dev'
@@ -18,7 +18,9 @@ async function main() {
 		await processAndroid(tempDir)
 	} catch (error: any) {
 		buildFailHandle(error)
-		removeDir(tempDir!)
+		if (!packConfig.cache) {
+			removeDir(tempDir!)
+		}
 	}
 }
 
@@ -75,7 +77,7 @@ export default async () => {
 }
 
 process.on('SIGINT', async () => {
-	if (tempDir) {
+	if (tempDir && !packConfig?.cache) {
 		await removeDir(tempDir!)
 	}
 	process.exit()

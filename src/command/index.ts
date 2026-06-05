@@ -1,5 +1,5 @@
 import { spawn } from 'child_process'
-import { showSpinner } from 'src/base/spinner'
+import { finishShowSpinner, showSpinner } from 'src/base/spinner'
 
 export function handleCommand(
 	rootDir: string,
@@ -14,14 +14,15 @@ export function handleCommand(
 		})
 
 		commandProcess.stdout.on('data', data => {
-			showSpinner(`${_command} stdout: ${data}`)
+			showSpinner(`${data}`)
 		})
 
 		commandProcess.stderr.on('data', data => {
-			showSpinner(`${_command} stderr: ${data}`)
+			showSpinner(`${data}`)
 		})
 
 		commandProcess.on('close', code => {
+			finishShowSpinner()
 			if (code !== 0) {
 				reject(new Error(`${_command} exited with code ${code}`))
 			} else {

@@ -6,7 +6,8 @@ import { APP_NATIVE_PERMISSION_CONFIG_ERROR } from 'src/const'
 import { processCameraPermission } from './modules/camera'
 import { processLocationPermission } from './modules/location'
 import { processRecordAudioPermission } from './modules/recordAudio'
-const PermissionList = ['CAMERA', 'LOCATION', 'RECORD_AUDIO']
+import { processPhotoLibraryPermission } from './modules/photoLibrary'
+const PermissionList = ['CAMERA', 'LOCATION', 'RECORD_AUDIO', 'PHOTO_LIBRARY']
 
 export async function handleNativePermission(rootDir: string) {
 	const nativePermission = packConfig.nativePermission
@@ -43,6 +44,9 @@ export async function handleNativePermission(rootDir: string) {
 				break
 			case 'RECORD_AUDIO':
 				await processRecordAudioPermission()
+				break
+			case 'PHOTO_LIBRARY':
+				await processPhotoLibraryPermission()
 				break
 		}
 	}

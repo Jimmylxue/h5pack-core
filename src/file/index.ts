@@ -6,14 +6,20 @@ import { spinner } from 'src/base/spinner'
 
 /**
  * 清空文件夹
+ * @param dir 目标目录
+ * @param silent 是否静默模式（不显示 spinner 提示），用于预清理场景
  */
-export async function removeDir(dir: string) {
+export async function removeDir(dir: string, silent = false) {
 	try {
 		await rm(dir, { recursive: true, force: true })
-		spinner.succeed('🙈 Success clear cache')
-		console.log('success clear data')
+		if (!silent) {
+			spinner.succeed('🙈 Success clear cache')
+			console.log('success clear data')
+		}
 	} catch (error: any) {
-		spinner.fail(`🙈 remove temp dir fail in ${dir}`)
+		if (!silent) {
+			spinner.fail(`🙈 remove temp dir fail in ${dir}`)
+		}
 	}
 }
 

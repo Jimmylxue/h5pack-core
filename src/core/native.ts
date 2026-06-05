@@ -7,7 +7,7 @@ import {
 } from 'src/const'
 import { promises } from 'fs'
 import { join, resolve } from 'path'
-import { copyFilesByDir, isAvailableDir } from 'src/file'
+import { copyFilesByDir, isAvailableDir, removeDir } from 'src/file'
 import { handleCommand } from 'src/command'
 import { handleCustomConfig } from './customConfigHandle'
 import { PackError } from 'src/base/error'
@@ -68,30 +68,38 @@ export async function copyBuildSource(
 
 export async function processAndroid(rootDir: string) {
 	const yarnCommandDir = join(rootDir, './h5pack-native')
-	spinner.start('🚩 Download Source ......')
-	// 克隆仓库
-	await handleCommand(
-		rootDir,
-		'git',
-		['clone', AndroidRepositories[packConfig.registry], yarnCommandDir],
-		originErrorMessage => {
-			spinner.stop()
-			throw new PackError(GIT_CLONE_ERROR, originErrorMessage)
+	const useCache = packConfig.cache && isAvailableDir(yarnCommandDir)
+
+	if (!useCache) {
+		// 非缓存模式：清理可能残留的目录（上次 Ctrl+C 或异常退出时未完成清理）
+		if (isAvailableDir(yarnCommandDir)) {
+			await removeDir(yarnCommandDir, true)
 		}
-	)
 
-	spinner.succeed('✅ download success!')
+		spinner.start('🚩 Download Source ......')
+		// 克隆仓库
+		await handleCommand(
+			rootDir,
+			'git',
+			['clone', AndroidRepositories[packConfig.registry], yarnCommandDir],
+			originErrorMessage => {
+				spinner.stop()
+				throw new PackError(GIT_CLONE_ERROR, originErrorMessage)
+			}
+		)
 
-	await copyBuildSource(rootDir, originErrorMessage => {
-		throw new PackError(COPY_BUILD_SOURCE_ERROR, originErrorMessage)
-	})
-
-	spinner.start('🚩 Handle Custom Permission ......')
-	await handleNativePermission(rootDir)
+		spinner.succeed('✅ download success!')
+	} else {
+		spinner.succeed('✅ Using cached native project!')
+		spinner.warn(
+			'⚠️  Cache mode enabled — using existing native project. If you encounter build issues, set "cache": false in h5pack.json and retry.'
+		)
+	}
 
 	spinner.start('🚩 Install Dependencies ......')
 	/**
-	 * 安装依赖
+	 * 安装依赖 - 即使使用缓存也执行，yarn 会自动跳过已安装的包，速度很快
+	 * 同时可以修复上次安装被中断导致的 node_modules 不完整问题
 	 */
 	await handleCommand(yarnCommandDir, 'yarn', [], originErrorMessage => {
 		spinner.stop()
@@ -99,6 +107,13 @@ export async function processAndroid(rootDir: string) {
 	})
 
 	spinner.succeed('✅ Dependencies Installed!')
+
+	await copyBuildSource(rootDir, originErrorMessage => {
+		throw new PackError(COPY_BUILD_SOURCE_ERROR, originErrorMessage)
+	})
+
+	spinner.start('🚩 Handle Custom Permission ......')
+	await handleNativePermission(rootDir)
 
 	spinner.start('🚩 Handle Custom Config ......')
 	/**

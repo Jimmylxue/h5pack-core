@@ -23,4 +23,8 @@ export const PERMISSION_MAP = {
 		'android.permission.READ_EXTERNAL_STORAGE',
 	],
 	RECORD_AUDIO: ['android.permission.RECORD_AUDIO'],
+	PHOTO_LIBRARY: [
+		'android.permission.READ_MEDIA_IMAGES',
+		'android.permission.READ_EXTERNAL_STORAGE',
+	],
 }

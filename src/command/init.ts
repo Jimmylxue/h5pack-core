@@ -11,6 +11,7 @@ function getTemplate() {
 			output: './',
 			registry: 'github',
 			buildFormat: 'apk',
+			cache: false,
 			packageName: 'com.h5pack.native',
 			versionName: '1.0.0',
 			versionCode: '1',

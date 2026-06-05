@@ -11,7 +11,7 @@
 	<body>
 		<div id="root"></div>
 		<div>
-			<h1>hello h5pack</h1>
+			<h1>hello h5pack v1</h1>
 
 			<h3>相机权限</h3>
 			<button onclick="checkPermission()">查看权限~</button>
@@ -48,7 +48,7 @@
 		var vConsole = new window.VConsole()
 	</script>
 
-	<script src="./h5PackBridge.min.js"></script>
+	<script src="./h5pack-bridge.min.js"></script>
 
 	<script>
 		function checkPermission() {
@@ -108,7 +108,7 @@
 			h5packBridge.recordAudio.start().then(res => {
 				console.log('开始录音res', res)
 				document.getElementById(
-					'recordAudioStartRes'
+					'recordAudioStartRes',
 				).textContent = `录音暂存路径：${res}`
 			})
 		}
@@ -117,7 +117,7 @@
 			h5packBridge.recordAudio.stop().then(res => {
 				console.log('停止录音res', res)
 				document.getElementById(
-					'recordAudioStopRes'
+					'recordAudioStopRes',
 				).textContent = `录音完成结果：${JSON.stringify(res)}`
 			})
 		}
@@ -132,7 +132,7 @@
 			h5packBridge.recordAudio.restart().then(res => {
 				console.log('重新录音res', res)
 				document.getElementById(
-					'recordAudioCancelRes'
+					'recordAudioCancelRes',
 				).textContent = `重新录音结果：${JSON.stringify(res)}`
 			})
 		}

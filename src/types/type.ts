@@ -1,4 +1,4 @@
-export type TNativePermission = 'CAMERA' | 'LOCATION' | 'RECORD_AUDIO'
+export type TNativePermission = 'CAMERA' | 'LOCATION' | 'RECORD_AUDIO' | 'PHOTO_LIBRARY'
 
 export type TPackConfig = {
 	entry: string
@@ -8,6 +8,7 @@ export type TPackConfig = {
 	logo?: string
 	output?: string
 	log?: boolean
+	cache?: boolean
 	registry: 'github' | 'gitee'
 	nativePermission?: TNativePermission[]
 	keystorePath?: string

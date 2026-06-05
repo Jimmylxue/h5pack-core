@@ -10,4 +10,5 @@ export function handlePackConfig() {
 	packConfig = require(resolve(process.cwd(), 'h5pack.json'))
 	packConfig.registry = packConfig.registry || 'github' // 设置默认配置
 	packConfig.buildFormat = packConfig.buildFormat || 'apk'
+	packConfig.cache = packConfig.cache ?? false
 }
