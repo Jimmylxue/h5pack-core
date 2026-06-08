@@ -1,13 +1,16 @@
-import ora from 'ora'
 import { PackError } from 'src/base/error'
 import { packConfig } from 'src/base/handleConfig'
 import { spinner } from 'src/base/spinner'
 import { APP_NATIVE_PERMISSION_CONFIG_ERROR } from 'src/const'
-import { processCameraPermission } from './modules/camera'
-import { processLocationPermission } from './modules/location'
-import { processRecordAudioPermission } from './modules/recordAudio'
-import { processPhotoLibraryPermission } from './modules/photoLibrary'
-const PermissionList = ['CAMERA', 'LOCATION', 'RECORD_AUDIO', 'PHOTO_LIBRARY']
+import { processPermission } from './utils'
+import { TNativePermission } from 'src/types/type'
+
+const PermissionList: TNativePermission[] = [
+	'CAMERA',
+	'LOCATION',
+	'RECORD_AUDIO',
+	'PHOTO_LIBRARY',
+]
 
 export async function handleNativePermission(rootDir: string) {
 	const nativePermission = packConfig.nativePermission
@@ -34,20 +37,8 @@ export async function handleNativePermission(rootDir: string) {
 
 	const usePermissions = [...new Set(nativePermission)]
 
-	for (const element of usePermissions) {
-		switch (element) {
-			case 'CAMERA':
-				await processCameraPermission()
-				break
-			case 'LOCATION':
-				await processLocationPermission()
-				break
-			case 'RECORD_AUDIO':
-				await processRecordAudioPermission()
-				break
-			case 'PHOTO_LIBRARY':
-				await processPhotoLibraryPermission()
-				break
-		}
+	for (const type of usePermissions) {
+		await processPermission(type)
+		spinner.succeed(`✅ Handle Native Permission ${type} SUCCESS!`)
 	}
 }
