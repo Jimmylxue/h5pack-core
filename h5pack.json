@@ -9,7 +9,7 @@
 	"versionCode": "1",
 	"logo": "",
 	"splash": "",
-	"nativePermission": ["CAMERA"],
+	"nativePermission": ["CAMERA", "LOCATION"],
 	"keystorePath": "",
 	"storePassword": "",
 	"keyAlias": "",
