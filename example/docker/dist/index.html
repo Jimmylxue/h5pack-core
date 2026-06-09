@@ -1,78 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="./vite.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Docker Example</title>
-		<script type="module" crossorigin src="./assets/index-ZSmx29MA.js"></script>
-		<link rel="stylesheet" crossorigin href="./assets/index-n_ryQ3BS.css" />
-	</head>
-	<body>
-		<div id="root"></div>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Docker Example</title>
+    <style>
+      body { font-family: sans-serif; padding: 16px; background: #f5f7fa; }
+      h1 { font-size: 18px; text-align: center; }
+      .card { background: #fff; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+      button { padding: 8px 12px; margin: 4px; border: none; border-radius: 6px; background: #4f8ef7; color: #fff; font-size: 13px; }
+      .result { margin-top: 8px; padding: 8px; background: #f8f9fb; border-radius: 6px; font-size: 12px; color: #666; word-break: break-all; }
+      img { max-width: 100%; border-radius: 6px; margin-top: 8px; display: none; }
+      img[src]:not([src=""]) { display: block; }
+    </style>
+  </head>
+  <body>
+    <h1>📦 h5pack Docker 示例</h1>
 
-		<button onclick="checkPermission()">查看权限</button>
-		<button onclick="requestCameraPermission()">申请相机权限</button>
-		<button onclick="openCamera()">跳转相机</button>
-		<button onclick="chooseImage()">打开相册</button>
-		<button onclick="scan()">扫码</button>
+    <div class="card">
+      <b>相机</b><br />
+      <button onclick="checkPerm()">查看权限</button>
+      <button onclick="reqPerm()">申请权限</button>
+      <button onclick="openCamera()">📷 拍照</button>
+      <button onclick="chooseImage()">🖼 相册</button>
+      <img id="preview" alt="" />
+    </div>
 
-		<img id="cameraPreview" alt="" />
+    <div class="card">
+      <b>定位</b><br />
+      <button onclick="getLocation()">📍 获取位置</button>
+      <button onclick="openLocationSettings()">定位设置</button>
+      <div class="result" id="pos"></div>
+    </div>
 
-		<div>扫码结果：<span id="scanRes"></span></div>
+    <div class="card">
+      <b>录音</b><br />
+      <button onclick="startRec()">🎙 开始</button>
+      <button onclick="stopRec()">⏹ 停止</button>
+      <button onclick="cancelRec()">❌ 取消</button>
+      <button onclick="playRec()">▶ 播放</button>
+      <button onclick="stopPlayRec()">⏹ 停止播放</button>
+      <div class="result" id="rec"></div>
+    </div>
 
-		<div>
-			<button onclick="getCurrentPosition()">查看当前位置</button>
-			<div id="position"></div>
-		</div>
-	</body>
-	<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
-	<script>
-		// VConsole 默认会挂载到 `window.VConsole` 上
-		var vConsole = new window.VConsole()
-	</script>
+    <script src="./h5pack-bridge.min.js"></script>
+    <script>
+      var currentPath = '';
 
-	<script src="./h5PackBridge.min.js"></script>
+      function checkPerm() {
+        h5packBridge.camera.checkPermission().then(function (res) {
+          alert('相机权限：' + (res ? '已授权' : '未授权'));
+        });
+      }
 
-	<script>
-		function checkPermission() {
-			h5packBridge.camera.checkPermission().then(res => {
-				console.log('res', res)
-				alert(`权限结果：${res ? '有' : '无'}`)
-			})
-		}
+      function reqPerm() {
+        h5packBridge.camera.requestPermission().then(function (res) {
+          if (res.granted) { alert('已授权'); }
+          else if (res.status === 'never_ask_again') {
+            if (confirm('权限被永久拒绝，是否打开设置？')) h5packBridge.camera.openAppSettings();
+          } else { alert('被拒绝'); }
+        });
+      }
 
-		function requestCameraPermission() {
-			h5packBridge.camera.requestPermission().then(res => {
-				console.log('申请res', res)
-			})
-		}
+      function openCamera() {
+        h5packBridge.camera.open().then(function (res) {
+          document.getElementById('preview').src = res.base64;
+        });
+      }
 
-		function openCamera() {
-			h5packBridge.camera.open().then(res => {
-				console.log('拍照res', res)
-				document.getElementById('cameraPreview').src = res?.base64
-			})
-		}
+      function chooseImage() {
+        h5packBridge.camera.chooseImage().then(function (res) {
+          document.getElementById('preview').src = res[0].base64;
+        });
+      }
 
-		function chooseImage() {
-			h5packBridge.camera.chooseImage().then(res => {
-				console.log('拍照res', res)
-				document.getElementById('cameraPreview').src = res[1]?.base64
-			})
-		}
+      function getLocation() {
+        document.getElementById('pos').textContent = '定位中...';
+        h5packBridge.location.getCurrentPosition().then(function (res) {
+          document.getElementById('pos').textContent =
+            '纬度: ' + res.coords.latitude + ' 经度: ' + res.coords.longitude;
+        }).catch(function (err) {
+          document.getElementById('pos').textContent = '错误: ' + err.message;
+        });
+      }
 
-		function scan() {
-			h5packBridge.camera.scan().then(res => {
-				document.getElementById('scanRes').textContent = res
-			})
-		}
+      function openLocationSettings() {
+        h5packBridge.location.openLocationSettings();
+      }
 
-		function getCurrentPosition() {
-			h5packBridge.location.getCurrentPosition().then(res => {
-				console.log('地址res', res)
-				document.getElementById('position').textContent = JSON.stringify(res)
-			})
-		}
-	</script>
+      function startRec() {
+        h5packBridge.recordAudio.start().then(function () {
+          document.getElementById('rec').textContent = '录音中...';
+        });
+      }
+
+      function stopRec() {
+        h5packBridge.recordAudio.stop().then(function (res) {
+          currentPath = res.path;
+          document.getElementById('rec').textContent =
+            '录音完成: ' + res.durationMs + 'ms\n路径: ' + res.path;
+        });
+      }
+
+      function cancelRec() {
+        h5packBridge.recordAudio.cancel().then(function () {
+          currentPath = '';
+          document.getElementById('rec').textContent = '录音已取消';
+        });
+      }
+
+      function playRec() {
+        if (!currentPath) { alert('请先录音'); return; }
+        h5packBridge.recordAudio.play(currentPath).then(function () {
+          document.getElementById('rec').textContent = '播放中: ' + currentPath;
+        });
+      }
+
+      function stopPlayRec() {
+        h5packBridge.recordAudio.stopPlay().then(function () {
+          document.getElementById('rec').textContent = '播放已停止';
+        });
+      }
+    </script>
+  </body>
 </html>

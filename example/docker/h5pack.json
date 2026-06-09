@@ -5,5 +5,7 @@
 	"output": "./",
 	"log": true,
 	"registry": "gitee",
-	"logo": "./assets/splash.svg"
+	"logo": "./assets/splash.svg",
+	"nativePermission": ["CAMERA", "LOCATION", "RECORD_AUDIO"],
+	"scanEnabled": false
 }

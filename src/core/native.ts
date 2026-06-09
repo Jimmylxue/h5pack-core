@@ -6,7 +6,7 @@ import {
 	GIT_CLONE_ERROR,
 } from 'src/const'
 import { promises } from 'fs'
-import { join, resolve } from 'path'
+import { join, resolve, extname } from 'path'
 import { copyFilesByDir, isAvailableDir, removeDir } from 'src/file'
 import { handleCommand } from 'src/command'
 import { handleCustomConfig } from './customConfigHandle'
@@ -15,6 +15,25 @@ import { spinner } from 'src/base/spinner'
 import { packConfig } from 'src/base/handleConfig'
 import { handleNativePermission } from './permission'
 import { YARN_INSTALL_ERROR } from 'src/const'
+
+/**
+ * 重写 HTML 中的绝对路径为相对路径，避免运行时字符串替换
+ */
+async function rewriteHtmlPaths(dir: string) {
+	const entries = await promises.readdir(dir, { withFileTypes: true })
+	for (const entry of entries) {
+		const fullPath = join(dir, entry.name)
+		if (entry.isDirectory()) {
+			await rewriteHtmlPaths(fullPath)
+		} else if (extname(entry.name) === '.html') {
+			let content = await promises.readFile(fullPath, 'utf-8')
+			content = content
+				.replace(/(src|href)=["']\/(assets\/[^"']+)["']/g, '$1="$2"')
+				.replace(/url\(["']?\/(assets\/[^"')]+)["']?\)/g, 'url("$1")')
+			await promises.writeFile(fullPath, content, 'utf-8')
+		}
+	}
+}
 /**
  * 打包完成后的操作
  */
@@ -61,6 +80,8 @@ export async function copyBuildSource(
 		}
 		const goalPath = join(rootDir, './h5pack-native/public/webview/dist')
 		await copyFilesByDir(entryPath, goalPath)
+		// 构建时预处理 HTML 路径，避免运行时字符串替换
+		await rewriteHtmlPaths(goalPath)
 	} catch (error: any) {
 		errorHandle(error.message || 'packConfig.entry is not a available path')
 	}

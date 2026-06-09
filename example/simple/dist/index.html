@@ -1,19 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="./vite.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Vite + React + TS</title>
-		<script type="module" crossorigin src="./assets/index-ZSmx29MA.js"></script>
-		<link rel="stylesheet" crossorigin href="./assets/index-n_ryQ3BS.css" />
-	</head>
-	<body>
-		<div id="root"></div>
-	</body>
-	<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
-	<script>
-		// VConsole 默认会挂载到 `window.VConsole` 上
-		var vConsole = new window.VConsole()
-	</script>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>h5pack 最小示例</title>
+    <style>
+      body { font-family: sans-serif; padding: 16px; background: #f5f7fa; }
+      h1 { font-size: 18px; text-align: center; }
+      .card { background: #fff; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+      button { padding: 8px 12px; margin: 4px; border: none; border-radius: 6px; background: #4f8ef7; color: #fff; font-size: 13px; }
+      .result { margin-top: 8px; padding: 8px; background: #f8f9fb; border-radius: 6px; font-size: 12px; color: #666; word-break: break-all; }
+      img { max-width: 100%; border-radius: 6px; margin-top: 8px; display: none; }
+      img[src]:not([src=""]) { display: block; }
+    </style>
+  </head>
+  <body>
+    <h1>📦 h5pack 最小示例</h1>
+
+    <div class="card">
+      <b>相机</b><br />
+      <button onclick="openCamera()">📷 拍照</button>
+      <button onclick="chooseImage()">🖼 相册</button>
+      <img id="preview" alt="" />
+    </div>
+
+    <div class="card">
+      <b>定位</b><br />
+      <button onclick="getLocation()">📍 获取位置</button>
+      <div class="result" id="pos"></div>
+    </div>
+
+    <div class="card">
+      <b>录音</b><br />
+      <button onclick="startRec()">🎙 开始</button>
+      <button onclick="stopRec()">⏹ 停止</button>
+      <button onclick="playRec()">▶ 播放</button>
+      <button onclick="stopPlayRec()">⏹ 停止播放</button>
+      <div class="result" id="rec"></div>
+    </div>
+
+    <script src="./h5pack-bridge.min.js"></script>
+    <script>
+      var currentPath = '';
+
+      function openCamera() {
+        h5packBridge.camera.open().then(function (res) {
+          document.getElementById('preview').src = res.base64;
+        });
+      }
+
+      function chooseImage() {
+        h5packBridge.camera.chooseImage().then(function (res) {
+          document.getElementById('preview').src = res[0].base64;
+        });
+      }
+
+      function getLocation() {
+        document.getElementById('pos').textContent = '定位中...';
+        h5packBridge.location.getCurrentPosition().then(function (res) {
+          document.getElementById('pos').textContent =
+            '纬度: ' + res.coords.latitude + ' 经度: ' + res.coords.longitude;
+        }).catch(function (err) {
+          document.getElementById('pos').textContent = '错误: ' + err.message;
+        });
+      }
+
+      function startRec() {
+        h5packBridge.recordAudio.start().then(function () {
+          document.getElementById('rec').textContent = '录音中...';
+        });
+      }
+
+      function stopRec() {
+        h5packBridge.recordAudio.stop().then(function (res) {
+          currentPath = res.path;
+          document.getElementById('rec').textContent =
+            '录音完成: ' + res.durationMs + 'ms\n路径: ' + res.path;
+        });
+      }
+
+      function playRec() {
+        if (!currentPath) { alert('请先录音'); return; }
+        h5packBridge.recordAudio.play(currentPath).then(function () {
+          document.getElementById('rec').textContent = '播放中: ' + currentPath;
+        });
+      }
+
+      function stopPlayRec() {
+        h5packBridge.recordAudio.stopPlay().then(function () {
+          document.getElementById('rec').textContent = '播放已停止';
+        });
+      }
+    </script>
+  </body>
 </html>

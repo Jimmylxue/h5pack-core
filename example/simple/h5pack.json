@@ -1,9 +1,11 @@
 {
 	"entry": "./dist",
 	"name": "my-app",
-	"splash":"./assets/splash.svg",
-	"output":"./",
-	"log":true,
+	"splash": "./assets/splash.svg",
+	"output": "./",
+	"log": true,
 	"registry": "github",
-	"logo": "./assets/splash.svg"
+	"logo": "./assets/splash.svg",
+	"nativePermission": ["CAMERA", "LOCATION", "RECORD_AUDIO"],
+	"scanEnabled": false
 }
