@@ -4,7 +4,7 @@
 
 h5pack 是一款跨平台应用打包工具（全面支持 macOS 和 Windows），通过简洁的配置文件，即可将任意 H5 应用快速打包成 Android APK。该工具不仅简化了打包流程，更提供了强大的原生平台能力调用接口，让 H5 应用具备原生应用的完整功能。
 
-具体配置以在线文档为准：[h5pack传送门](https://h5pack.jimmyxuexue.top/)
+具体配置以在线文档为准：[h5pack 文档](https://h5pack-docs.vercel.app/)
 
 
 https://github.com/user-attachments/assets/0ea5b29f-849d-46a2-af35-130273b69965
@@ -72,13 +72,12 @@ h5pack 基于 React Native 技术架构构建，其核心工作机制如下：
 
 ## 优势特点
 
-极简配置：只需简单配置文件，快速完成打包
-
-- 跨平台支持：完美兼容 macOS 和 Windows 和 linux 开发环境
-
-- 原生能力：完整调用 Android 平台原生功能
-
-- 开发便捷：保留 H5 开发效率，享受原生应用体验
+- **极简配置**：只需简单配置文件，快速完成打包
+- **跨平台支持**：完美兼容 macOS、Windows、Linux 开发环境
+- **原生能力**：通过 Bridge 调用相机、GPS、麦克风、相册等 Android 原生功能
+- **开发便捷**：保留 H5 开发效率，享受原生应用体验
+- **包体精简**：启用 R8 混淆和资源收缩，APK 仅约 18MB
+- **全平台构建**：支持 Docker 一键构建，无需本地 Android 环境
 
 ## 其他内容
 
