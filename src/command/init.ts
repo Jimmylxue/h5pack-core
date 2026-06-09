@@ -18,6 +18,7 @@ function getTemplate() {
 			logo: '',
 			splash: '',
 			nativePermission: ['CAMERA', 'LOCATION', 'RECORD_AUDIO'],
+			scanEnabled: false,
 			keystorePath: '',
 			storePassword: '',
 			keyAlias: '',

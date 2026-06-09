@@ -66,3 +66,9 @@ export const DEV_ERROR = {
 	code: 10011,
 	message: 'dev环境启动异常',
 }
+
+export const SCAN_CONFIG_ERROR = {
+	code: 10012,
+	message:
+		'scanEnabled 需要 CAMERA 权限，请在 nativePermission 中添加 "CAMERA"',
+}

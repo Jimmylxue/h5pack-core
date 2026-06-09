@@ -1,7 +1,7 @@
 import { PackError } from 'src/base/error'
 import { packConfig } from 'src/base/handleConfig'
 import { spinner } from 'src/base/spinner'
-import { APP_NATIVE_PERMISSION_CONFIG_ERROR } from 'src/const'
+import { APP_NATIVE_PERMISSION_CONFIG_ERROR, SCAN_CONFIG_ERROR } from 'src/const'
 import { processPermission } from './utils'
 import { TNativePermission } from 'src/types/type'
 
@@ -14,6 +14,15 @@ const PermissionList: TNativePermission[] = [
 
 export async function handleNativePermission(rootDir: string) {
 	const nativePermission = packConfig.nativePermission
+
+	// 校验 scanEnabled 与 CAMERA 权限的一致性
+	if (packConfig.scanEnabled) {
+		if (!nativePermission || !nativePermission.includes('CAMERA')) {
+			spinner.stop()
+			throw new PackError(SCAN_CONFIG_ERROR, 'scanEnabled requires CAMERA permission')
+		}
+	}
+
 	if (!nativePermission) {
 		spinner.info('✅ 无特殊权限配置 ......')
 		return

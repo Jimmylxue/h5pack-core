@@ -15,5 +15,6 @@
 	"keyAlias": "",
 	"keyPassword": "",
 	"log": true,
-	"cache": false
+	"cache": false,
+	"scanEnabled": false
 }

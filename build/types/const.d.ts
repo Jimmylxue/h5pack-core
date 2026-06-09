@@ -53,3 +53,7 @@ export declare const DEV_ERROR: {
     code: number;
     message: string;
 };
+export declare const SCAN_CONFIG_ERROR: {
+    code: number;
+    message: string;
+};

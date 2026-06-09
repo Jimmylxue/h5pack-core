@@ -11,6 +11,7 @@ export type TPackConfig = {
 	cache?: boolean
 	registry: 'github' | 'gitee'
 	nativePermission?: TNativePermission[]
+	scanEnabled?: boolean
 	keystorePath?: string
 	storePassword?: string
 	keyAlias?: string

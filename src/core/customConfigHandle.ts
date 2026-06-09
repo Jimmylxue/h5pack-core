@@ -24,10 +24,11 @@ export async function handleEnvFile(
 	const envContent = `
   APP_NAME=${packConfig.name || 'H5Pack'}
   APP_ANDROID_VERSION=${packConfig.versionName || '1.0.0'}
-  APP_ANDROID_VERSION_CODE=${packConfig.versionCode || '1'}	
-  APP_PACKAGE_NAME=${packConfig.packageName || 'com.h5pack.native'}		
+  APP_ANDROID_VERSION_CODE=${packConfig.versionCode || '1'}
+  APP_PACKAGE_NAME=${packConfig.packageName || 'com.h5pack.native'}
   APP_WEBVIEW_DEV_ENABLED=${isDevMode ? 'true' : 'false'}
   APP_WEBVIEW_DEV_PORT=${port || '9996'}
+  APP_SCAN_ENABLED=${packConfig.scanEnabled ? 'true' : 'false'}
   `
 	try {
 		await writeFile(resolve(yarnCommandDir, '.env'), envContent, 'utf-8')
