@@ -12,6 +12,7 @@ export type TPackConfig = {
 	registry: 'github' | 'gitee'
 	nativePermission?: TNativePermission[]
 	scanEnabled?: boolean
+	bridgeDebugPanel?: boolean
 	keystorePath?: string
 	storePassword?: string
 	keyAlias?: string

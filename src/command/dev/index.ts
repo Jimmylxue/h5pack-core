@@ -61,7 +61,7 @@ export async function processAndroidDev(
 		start: boolean
 		devPort?: number
 		reversePort?: number
-	}
+	},
 ) {
 	const yarnCommandDir = join(rootDir, './h5pack-native')
 	console.log(chalk.cyan('🚩 Prepare Native Source (Dev) ......'))
@@ -74,7 +74,7 @@ export async function processAndroidDev(
 			originErrorMessage => {
 				console.log(chalk.red(`❌ Download failed: ${originErrorMessage}`))
 				throw new PackError(GIT_CLONE_ERROR, originErrorMessage)
-			}
+			},
 		)
 		console.log(chalk.green('✅ download success!'))
 	} else {
@@ -96,19 +96,18 @@ export async function processAndroidDev(
 
 	if (isServerMode) {
 		if (options.devPort) {
-			await handleEnvFile(yarnCommandDir, true, options.devPort)
 			console.log(
 				chalk.cyan(
-					`⚙️  Inject DEV env: APP_WEBVIEW_DEV_ENABLED=true, PORT=${options.devPort}`
-				)
+					`⚙️  Inject DEV env: APP_WEBVIEW_DEV_ENABLED=true, PORT=${options.devPort}`,
+				),
 			)
 		}
 
 		if (options.reversePort) {
 			console.log(
 				chalk.cyan(
-					`🔁 adb reverse tcp:${options.reversePort} -> host tcp:${options.reversePort}`
-				)
+					`🔁 adb reverse tcp:${options.reversePort} -> host tcp:${options.reversePort}`,
+				),
 			)
 			await handleCommand(
 				process.cwd(),
@@ -116,7 +115,7 @@ export async function processAndroidDev(
 				['reverse', `tcp:${options.reversePort}`, `tcp:${options.reversePort}`],
 				originErrorMessage => {
 					console.log(chalk.red(`❌ adb reverse failed: ${originErrorMessage}`))
-				}
+				},
 			)
 		}
 
@@ -151,6 +150,6 @@ export async function processAndroidDev(
 	spinner.succeed('✅ Dependencies Installed!')
 
 	spinner.succeed(
-		'🎉 Dev project is ready. Open h5pack-native/android in Android Studio or cd h5pack-native && run yarn dev:android:local'
+		'🎉 Dev project is ready. Open h5pack-native/android in Android Studio or cd h5pack-native && run yarn dev:android:local',
 	)
 }

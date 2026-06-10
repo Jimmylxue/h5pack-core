@@ -1,6 +1,6 @@
 {
 	"name": "h5pack",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "一行命令，网页变 App",
 	"main": "build/core.cjs.prod.js",
 	"module": "build/core.esm.prod.js",

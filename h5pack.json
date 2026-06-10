@@ -2,7 +2,7 @@
 	"entry": "./dist",
 	"name": "H5PackApp",
 	"output": "./",
-	"registry": "github",
+	"registry": "gitee",
 	"buildFormat": "apk",
 	"packageName": "com.h5pack.native",
 	"versionName": "1.0.0",
@@ -15,6 +15,7 @@
 	"keyAlias": "",
 	"keyPassword": "",
 	"log": true,
-	"cache": false,
-	"scanEnabled": false
+	"cache": true,
+	"scanEnabled": false,
+	"bridgeDebugPanel": false
 }

@@ -19,7 +19,7 @@ import { handleSigning } from './sign/index'
 export async function handleEnvFile(
 	yarnCommandDir: string,
 	isDevMode: boolean = false,
-	port?: number
+	port?: number,
 ) {
 	const envContent = `
   APP_NAME=${packConfig.name || 'H5Pack'}
@@ -29,13 +29,18 @@ export async function handleEnvFile(
   APP_WEBVIEW_DEV_ENABLED=${isDevMode ? 'true' : 'false'}
   APP_WEBVIEW_DEV_PORT=${port || '9996'}
   APP_SCAN_ENABLED=${packConfig.scanEnabled ? 'true' : 'false'}
+  APP_BRIDGE_DEBUG_PANEL_ENABLED=${
+		packConfig.bridgeDebugPanel ? 'true' : 'false'
+	}
   `
+
+	console.log('envContent', envContent)
 	try {
 		await writeFile(resolve(yarnCommandDir, '.env'), envContent, 'utf-8')
 	} catch (error: any) {
 		throw new PackError(
 			GENERATE_ENV_ERROR,
-			error.message || 'write env file error'
+			error.message || 'write env file error',
 		)
 	}
 }
@@ -64,7 +69,7 @@ async function handleSplash(yarnCommandDir: string) {
 				],
 				originErrorMessage => {
 					throw new Error(originErrorMessage)
-				}
+				},
 			)
 		} else {
 			throw new Error(`packConfig.splash is not a available path`)
@@ -90,7 +95,7 @@ async function handleAppLogo(yarnCommandDir: string) {
 				['iconkits', `--input=./public/logo/${fileName}`],
 				originErrorMessage => {
 					throw new Error(originErrorMessage)
-				}
+				},
 			)
 		}
 	} catch (error: any) {
@@ -115,7 +120,7 @@ export async function handleStartLocal(yarnCommandDir: string) {
 			['dev:android:local'],
 			originErrorMessage => {
 				throw new Error(originErrorMessage)
-			}
+			},
 		)
 	} catch (error: any) {
 		throw new PackError(DEV_ERROR, error.message)
@@ -130,7 +135,7 @@ export async function handleServerMode(yarnCommandDir: string) {
 			['android'],
 			originErrorMessage => {
 				throw new Error(originErrorMessage)
-			}
+			},
 		)
 	} catch (error: any) {
 		throw new PackError(DEV_ERROR, error.message)
